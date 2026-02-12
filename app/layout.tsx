@@ -18,14 +18,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body className="font-sans bg-white text-gray-900 dark:bg-zinc-950 dark:text-zinc-100 transition-colors duration-200">
+      <body>
         <ThemeProvider>
           <CartProvider>
-            <div className="flex min-h-screen flex-col">
+            <div className="grain-overlay" />
+            <div className="relative flex min-h-screen flex-col">
               <Header />
               <main className="flex-1">{children}</main>
               <Footer />
             </div>
+            <div className="scroll-line" />
           </CartProvider>
         </ThemeProvider>
       </body>

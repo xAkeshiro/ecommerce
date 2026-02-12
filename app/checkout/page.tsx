@@ -28,7 +28,10 @@ export default function CheckoutPage() {
   }
 
   const inputClasses =
-    "mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-akira-600 focus:outline-none focus:ring-1 focus:ring-akira-600 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:focus:border-akira-500 dark:focus:ring-akira-500";
+    "mt-1 block w-full border border-line bg-card px-3 py-2 font-mono text-sm text-ink placeholder:text-ink-faint focus:border-ink focus:outline-none focus:ring-0 transition-colors";
+
+  const labelClasses =
+    "block font-mono text-[10px] uppercase tracking-wider text-ink-muted";
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -66,7 +69,6 @@ export default function CheckoutPage() {
         throw new Error(data.error || "Checkout failed");
       }
 
-      // Redirect to Stripe checkout
       if (data.url) {
         clearCart();
         window.location.href = data.url;
@@ -81,10 +83,10 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-xl px-4 py-24 text-center sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-zinc-100">
+        <h1 className="font-mono text-2xl uppercase tracking-wider text-ink">
           Checkout
         </h1>
-        <p className="mt-4 text-gray-600 dark:text-zinc-400">Your cart is empty.</p>
+        <p className="mt-4 text-sm text-ink-3">Your cart is empty.</p>
         <Link href="/products" className="btn-primary mt-8 inline-flex">
           Continue Shopping
         </Link>
@@ -93,85 +95,65 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-zinc-100">
+    <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+      <h1 className="animate-fade-up font-mono text-2xl uppercase tracking-wider text-ink">
         Checkout
       </h1>
 
-      <form onSubmit={handleSubmit} className="mt-8 space-y-8">
+      <form onSubmit={handleSubmit} className="mt-10 space-y-10">
         {/* Contact */}
-        <div>
-          <h2 className="text-lg font-medium text-gray-900 dark:text-zinc-100">
+        <div className="animate-fade-up" style={{ animationDelay: "0.1s" }}>
+          <h2 className="font-mono text-xs uppercase tracking-wider text-ink-muted">
             Contact Information
           </h2>
           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
-                Email
-              </label>
+              <label className={labelClasses}>Email</label>
               <input type="email" required value={form.email} onChange={(e) => updateField("email", e.target.value)} className={inputClasses} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
-                First Name
-              </label>
+              <label className={labelClasses}>First Name</label>
               <input type="text" required value={form.firstName} onChange={(e) => updateField("firstName", e.target.value)} className={inputClasses} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
-                Last Name
-              </label>
+              <label className={labelClasses}>Last Name</label>
               <input type="text" required value={form.lastName} onChange={(e) => updateField("lastName", e.target.value)} className={inputClasses} />
             </div>
             <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
-                Phone
-              </label>
+              <label className={labelClasses}>Phone</label>
               <input type="tel" required value={form.phone} onChange={(e) => updateField("phone", e.target.value)} className={inputClasses} />
             </div>
           </div>
         </div>
 
         {/* Shipping */}
-        <div>
-          <h2 className="text-lg font-medium text-gray-900 dark:text-zinc-100">
+        <div className="animate-fade-up" style={{ animationDelay: "0.2s" }}>
+          <h2 className="font-mono text-xs uppercase tracking-wider text-ink-muted">
             Shipping Address
           </h2>
           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
-                Address
-              </label>
+              <label className={labelClasses}>Address</label>
               <input type="text" required value={form.address1} onChange={(e) => updateField("address1", e.target.value)} className={inputClasses} />
             </div>
             <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
-                Apartment, suite, etc. (optional)
-              </label>
+              <label className={labelClasses}>Apartment, suite, etc. (optional)</label>
               <input type="text" value={form.address2} onChange={(e) => updateField("address2", e.target.value)} className={inputClasses} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
-                City
-              </label>
+              <label className={labelClasses}>City</label>
               <input type="text" required value={form.city} onChange={(e) => updateField("city", e.target.value)} className={inputClasses} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
-                State / Region
-              </label>
+              <label className={labelClasses}>State / Region</label>
               <input type="text" required value={form.region} onChange={(e) => updateField("region", e.target.value)} className={inputClasses} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
-                ZIP / Postal Code
-              </label>
+              <label className={labelClasses}>ZIP / Postal Code</label>
               <input type="text" required value={form.zip} onChange={(e) => updateField("zip", e.target.value)} className={inputClasses} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
-                Country
-              </label>
+              <label className={labelClasses}>Country</label>
               <select value={form.country} onChange={(e) => updateField("country", e.target.value)} className={inputClasses}>
                 <option value="US">United States</option>
                 <option value="CA">Canada</option>
@@ -185,32 +167,34 @@ export default function CheckoutPage() {
         </div>
 
         {/* Summary */}
-        <div className="rounded-lg bg-gray-50 p-6 dark:bg-zinc-900">
-          <h2 className="text-lg font-medium text-gray-900 dark:text-zinc-100">Order Summary</h2>
-          <ul className="mt-4 divide-y divide-gray-200 dark:divide-zinc-800">
+        <div className="animate-fade-up border border-line bg-card p-6" style={{ animationDelay: "0.3s" }}>
+          <h2 className="font-mono text-xs uppercase tracking-wider text-ink-muted">
+            Order Summary
+          </h2>
+          <ul className="mt-4 divide-y divide-line">
             {items.map((item) => (
               <li
                 key={`${item.productId}-${item.variantId}-${item.designOption ?? ""}`}
                 className="flex justify-between py-3 text-sm"
               >
-                <span className="text-gray-600 dark:text-zinc-400">
+                <span className="text-ink-3">
                   {item.title} ({item.variantTitle}
                   {item.designOption && ` / Design ${item.designOption}`}) x{item.quantity}
                 </span>
-                <span className="font-medium dark:text-zinc-100">
+                <span className="font-mono text-ink">
                   {formatPrice(item.price * item.quantity)}
                 </span>
               </li>
             ))}
           </ul>
-          <div className="mt-4 flex justify-between border-t border-gray-200 pt-4 text-base font-medium dark:border-zinc-700">
-            <span className="dark:text-zinc-100">Total</span>
-            <span className="dark:text-zinc-100">{formatPrice(totalPrice)}</span>
+          <div className="mt-4 flex justify-between border-t border-line pt-4">
+            <span className="font-mono text-xs uppercase tracking-wider text-ink">Total</span>
+            <span className="font-mono text-ink">{formatPrice(totalPrice)}</span>
           </div>
         </div>
 
         {error && (
-          <div className="rounded-md bg-red-50 p-4 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-400">
+          <div className="border border-red-500/20 bg-red-500/5 p-4 font-mono text-xs text-red-400">
             {error}
           </div>
         )}

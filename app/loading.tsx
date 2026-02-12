@@ -1,7 +1,12 @@
 export default function Loading() {
   return (
     <div className="flex min-h-[50vh] items-center justify-center">
-      <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-akira-600 dark:border-zinc-700 dark:border-t-akira-500" />
+      <div className="flex flex-col items-center gap-3">
+        <div className="h-6 w-6 animate-spin border border-line border-t-ink" />
+        <span className="font-mono text-[10px] uppercase tracking-widest text-ink-faint">
+          Loading
+        </span>
+      </div>
     </div>
   );
 }

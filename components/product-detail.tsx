@@ -62,10 +62,10 @@ export function ProductDetail({ product }: ProductDetailProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
       {/* Images */}
-      <div>
-        <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100 dark:bg-zinc-800">
+      <div className="animate-fade-up">
+        <div className="relative aspect-square overflow-hidden rounded-sm border border-line bg-card">
           <Image
             src={images[selectedImage]}
             alt={product.title}
@@ -81,10 +81,10 @@ export function ProductDetail({ product }: ProductDetailProps) {
               <button
                 key={i}
                 onClick={() => setSelectedImage(i)}
-                className={`relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-md border-2 ${
+                className={`relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-sm border transition-colors ${
                   selectedImage === i
-                    ? "border-akira-600"
-                    : "border-transparent"
+                    ? "border-ink"
+                    : "border-line hover:border-line-hover"
                 }`}
               >
                 <Image
@@ -101,100 +101,105 @@ export function ProductDetail({ product }: ProductDetailProps) {
       </div>
 
       {/* Details */}
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-zinc-100">
+      <div className="animate-fade-up" style={{ animationDelay: "0.1s" }}>
+        <h1 className="font-mono text-2xl uppercase tracking-wider text-ink">
           {product.title}
         </h1>
 
         {selectedVariant && (
-          <p className="mt-3 text-2xl text-gray-900 dark:text-zinc-100">
+          <p className="mt-3 font-mono text-lg text-ink-2">
             {formatPrice(selectedVariant.price)}
           </p>
         )}
 
-        {/* Design Option — A or B */}
-        <div className="mt-6">
-          <h3 className="text-sm font-medium text-gray-900 dark:text-zinc-100">
-            Design Option
-          </h3>
-          <div className="mt-2 flex gap-3">
-            {(["A", "B"] as const).map((opt) => (
-              <button
-                key={opt}
-                onClick={() => setDesignOption(opt)}
-                className={`flex h-12 flex-1 items-center justify-center rounded-md border-2 text-sm font-semibold transition-colors ${
-                  designOption === opt
-                    ? "border-akira-600 bg-akira-600 text-white"
-                    : "border-gray-300 text-gray-700 hover:border-akira-400 dark:border-zinc-600 dark:text-zinc-300 dark:hover:border-akira-500"
-                }`}
-              >
-                Option {opt}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Printify Options (Size, Color, etc.) */}
-        {product.options.map((option) => (
-          <div key={option.name} className="mt-6">
-            <h3 className="text-sm font-medium text-gray-900 dark:text-zinc-100">
-              {option.name}
-            </h3>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {option.values.map((value) => {
-                const matchingVariants = product.variants.filter((v) =>
-                  v.options.includes(value.id)
-                );
-                const isAvailable = matchingVariants.some(
-                  (v) => v.is_available
-                );
-                const isSelected = selectedVariant?.options.includes(value.id);
-
-                return (
-                  <button
-                    key={value.id}
-                    disabled={!isAvailable}
-                    onClick={() => {
-                      const variant = matchingVariants.find(
-                        (v) => v.is_available
-                      );
-                      if (variant) setSelectedVariant(variant);
-                    }}
-                    className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
-                      isSelected
-                        ? "border-akira-600 bg-akira-600 text-white"
-                        : isAvailable
-                        ? "border-gray-300 text-gray-700 hover:border-akira-400 dark:border-zinc-600 dark:text-zinc-300 dark:hover:border-akira-500"
-                        : "cursor-not-allowed border-gray-200 text-gray-400 line-through dark:border-zinc-700 dark:text-zinc-600"
-                    }`}
-                  >
-                    {value.title}
-                  </button>
-                );
-              })}
+        {/* Specifications */}
+        <div className="mt-8 space-y-0 border-t border-line">
+          {/* Design Option */}
+          <div className="detail-spec">
+            <span className="font-mono text-xs uppercase tracking-wider text-ink-muted">
+              Design
+            </span>
+            <div className="flex gap-2">
+              {(["A", "B"] as const).map((opt) => (
+                <button
+                  key={opt}
+                  onClick={() => setDesignOption(opt)}
+                  className={`font-mono text-xs uppercase tracking-wider px-4 py-2 border transition-colors ${
+                    designOption === opt
+                      ? "border-ink bg-ink text-page"
+                      : "border-line text-ink-muted hover:border-line-hover hover:text-ink-2"
+                  }`}
+                >
+                  Option {opt}
+                </button>
+              ))}
             </div>
           </div>
-        ))}
 
-        {/* Quantity */}
-        <div className="mt-6">
-          <h3 className="text-sm font-medium text-gray-900 dark:text-zinc-100">Quantity</h3>
-          <div className="mt-2 flex items-center gap-3">
-            <button
-              onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-gray-600 hover:bg-gray-50 dark:border-zinc-600 dark:text-zinc-400 dark:hover:bg-zinc-800"
-            >
-              -
-            </button>
-            <span className="w-8 text-center text-sm font-medium dark:text-zinc-100">
-              {quantity}
+          {/* Printify Options */}
+          {product.options.map((option) => (
+            <div key={option.name} className="detail-spec">
+              <span className="font-mono text-xs uppercase tracking-wider text-ink-muted">
+                {option.name}
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {option.values.map((value) => {
+                  const matchingVariants = product.variants.filter((v) =>
+                    v.options.includes(value.id)
+                  );
+                  const isAvailable = matchingVariants.some(
+                    (v) => v.is_available
+                  );
+                  const isSelected = selectedVariant?.options.includes(value.id);
+
+                  return (
+                    <button
+                      key={value.id}
+                      disabled={!isAvailable}
+                      onClick={() => {
+                        const variant = matchingVariants.find(
+                          (v) => v.is_available
+                        );
+                        if (variant) setSelectedVariant(variant);
+                      }}
+                      className={`font-mono text-xs uppercase tracking-wider px-3 py-1.5 border transition-colors ${
+                        isSelected
+                          ? "border-ink bg-ink text-page"
+                          : isAvailable
+                          ? "border-line text-ink-muted hover:border-line-hover hover:text-ink-2"
+                          : "cursor-not-allowed border-line-subtle text-ink-faint line-through"
+                      }`}
+                    >
+                      {value.title}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+
+          {/* Quantity */}
+          <div className="detail-spec">
+            <span className="font-mono text-xs uppercase tracking-wider text-ink-muted">
+              Quantity
             </span>
-            <button
-              onClick={() => setQuantity(quantity + 1)}
-              className="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-gray-600 hover:bg-gray-50 dark:border-zinc-600 dark:text-zinc-400 dark:hover:bg-zinc-800"
-            >
-              +
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                className="flex h-8 w-8 items-center justify-center border border-line font-mono text-sm text-ink-muted transition-colors hover:border-line-hover hover:text-ink"
+              >
+                −
+              </button>
+              <span className="w-8 text-center font-mono text-sm text-ink">
+                {quantity}
+              </span>
+              <button
+                onClick={() => setQuantity(quantity + 1)}
+                className="flex h-8 w-8 items-center justify-center border border-line font-mono text-sm text-ink-muted transition-colors hover:border-line-hover hover:text-ink"
+              >
+                +
+              </button>
+            </div>
           </div>
         </div>
 
@@ -204,14 +209,16 @@ export function ProductDetail({ product }: ProductDetailProps) {
           disabled={!selectedVariant}
           className="btn-primary mt-8 w-full"
         >
-          {added ? "Added to Cart!" : "Add to Cart"}
+          {added ? "Added to Cart" : "Add to Cart"}
         </button>
 
         {/* Description */}
-        <div className="mt-8 border-t border-gray-200 pt-8 dark:border-zinc-800">
-          <h3 className="text-sm font-medium text-gray-900 dark:text-zinc-100">Description</h3>
+        <div className="mt-10 border-t border-line pt-8">
+          <h3 className="font-mono text-xs uppercase tracking-wider text-ink-muted">
+            Description
+          </h3>
           <div
-            className="prose prose-sm mt-4 text-gray-600 dark:text-zinc-400 dark:prose-invert"
+            className="prose-sm mt-4 text-sm leading-relaxed text-ink-3 [&_a]:text-ink-2 [&_a]:underline"
             dangerouslySetInnerHTML={{ __html: product.description }}
           />
         </div>
