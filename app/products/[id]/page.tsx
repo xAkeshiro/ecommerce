@@ -3,7 +3,6 @@ import {
   getProduct,
   getEnabledVariants,
   getDefaultImage,
-  formatPrice,
 } from "@/lib/printify";
 import { ProductDetail } from "@/components/product-detail";
 
@@ -15,11 +14,11 @@ export async function generateMetadata({ params }: Props) {
   try {
     const product = await getProduct(params.id);
     return {
-      title: `${product.title} | Custom Store`,
+      title: `${product.title} | Akira`,
       description: product.description.replace(/<[^>]*>/g, "").slice(0, 160),
     };
   } catch {
-    return { title: "Product Not Found" };
+    return { title: "Product Not Found | Akira" };
   }
 }
 

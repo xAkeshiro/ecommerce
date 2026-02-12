@@ -17,7 +17,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Link href={`/products/${product.id}`} className="group block">
-      <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100">
+      <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100 dark:bg-zinc-800">
         <Image
           src={image}
           alt={product.title}
@@ -27,10 +27,10 @@ export function ProductCard({ product }: ProductCardProps) {
         />
       </div>
       <div className="mt-3">
-        <h3 className="text-sm font-medium text-gray-900 group-hover:underline">
+        <h3 className="text-sm font-medium text-gray-900 group-hover:text-akira-600 dark:text-zinc-100 dark:group-hover:text-akira-500">
           {product.title}
         </h3>
-        <p className="mt-1 text-sm text-gray-600">
+        <p className="mt-1 text-sm text-gray-600 dark:text-zinc-400">
           {min === max ? formatPrice(min) : `${formatPrice(min)} - ${formatPrice(max)}`}
         </p>
       </div>

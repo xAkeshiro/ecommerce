@@ -10,6 +10,7 @@ export interface CartItem {
   price: number;
   quantity: number;
   image: string;
+  designOption?: "A" | "B";
 }
 
 interface CartState {
@@ -18,22 +19,27 @@ interface CartState {
 
 type CartAction =
   | { type: "ADD_ITEM"; payload: CartItem }
-  | { type: "REMOVE_ITEM"; payload: { productId: string; variantId: number } }
+  | { type: "REMOVE_ITEM"; payload: { productId: string; variantId: number; designOption?: "A" | "B" } }
   | {
       type: "UPDATE_QUANTITY";
-      payload: { productId: string; variantId: number; quantity: number };
+      payload: { productId: string; variantId: number; designOption?: "A" | "B"; quantity: number };
     }
   | { type: "CLEAR_CART" }
   | { type: "LOAD_CART"; payload: CartItem[] };
 
+function itemKey(item: { productId: string; variantId: number; designOption?: "A" | "B" }) {
+  return `${item.productId}-${item.variantId}-${item.designOption ?? ""}`;
+}
+
 interface CartContextType {
   items: CartItem[];
   addItem: (item: CartItem) => void;
-  removeItem: (productId: string, variantId: number) => void;
+  removeItem: (productId: string, variantId: number, designOption?: "A" | "B") => void;
   updateQuantity: (
     productId: string,
     variantId: number,
-    quantity: number
+    quantity: number,
+    designOption?: "A" | "B"
   ) => void;
   clearCart: () => void;
   totalItems: number;
@@ -42,19 +48,25 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+function matchItem(
+  item: CartItem,
+  payload: { productId: string; variantId: number; designOption?: "A" | "B" }
+) {
+  return (
+    item.productId === payload.productId &&
+    item.variantId === payload.variantId &&
+    (item.designOption ?? "") === (payload.designOption ?? "")
+  );
+}
+
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case "ADD_ITEM": {
-      const existing = state.items.find(
-        (item) =>
-          item.productId === action.payload.productId &&
-          item.variantId === action.payload.variantId
-      );
+      const existing = state.items.find((item) => matchItem(item, action.payload));
       if (existing) {
         return {
           items: state.items.map((item) =>
-            item.productId === action.payload.productId &&
-            item.variantId === action.payload.variantId
+            matchItem(item, action.payload)
               ? { ...item, quantity: item.quantity + action.payload.quantity }
               : item
           ),
@@ -64,30 +76,17 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     }
     case "REMOVE_ITEM":
       return {
-        items: state.items.filter(
-          (item) =>
-            !(
-              item.productId === action.payload.productId &&
-              item.variantId === action.payload.variantId
-            )
-        ),
+        items: state.items.filter((item) => !matchItem(item, action.payload)),
       };
     case "UPDATE_QUANTITY":
       if (action.payload.quantity <= 0) {
         return {
-          items: state.items.filter(
-            (item) =>
-              !(
-                item.productId === action.payload.productId &&
-                item.variantId === action.payload.variantId
-              )
-          ),
+          items: state.items.filter((item) => !matchItem(item, action.payload)),
         };
       }
       return {
         items: state.items.map((item) =>
-          item.productId === action.payload.productId &&
-          item.variantId === action.payload.variantId
+          matchItem(item, action.payload)
             ? { ...item, quantity: action.payload.quantity }
             : item
         ),
@@ -101,7 +100,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
   }
 }
 
-const CART_STORAGE_KEY = "ecommerce-cart";
+const CART_STORAGE_KEY = "akira-cart";
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [] });
@@ -126,17 +125,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addItem = (item: CartItem) =>
     dispatch({ type: "ADD_ITEM", payload: item });
 
-  const removeItem = (productId: string, variantId: number) =>
-    dispatch({ type: "REMOVE_ITEM", payload: { productId, variantId } });
+  const removeItem = (productId: string, variantId: number, designOption?: "A" | "B") =>
+    dispatch({ type: "REMOVE_ITEM", payload: { productId, variantId, designOption } });
 
   const updateQuantity = (
     productId: string,
     variantId: number,
-    quantity: number
+    quantity: number,
+    designOption?: "A" | "B"
   ) =>
     dispatch({
       type: "UPDATE_QUANTITY",
-      payload: { productId, variantId, quantity },
+      payload: { productId, variantId, quantity, designOption },
     });
 
   const clearCart = () => dispatch({ type: "CLEAR_CART" });
