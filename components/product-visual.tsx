@@ -4,7 +4,13 @@ interface ProductVisualProps {
   subtitle: string;
 }
 
-const ACCENT = "#888";
+const BODY = "var(--product-body)";
+const CAP = "var(--product-cap)";
+const STROKE = "var(--product-stroke)";
+const LABEL = "var(--product-label)";
+const NAME = "var(--product-name)";
+const TYPE = "var(--product-type)";
+const ACCENT = "var(--product-stroke)";
 
 function ContainerSVG({
   name,
@@ -29,8 +35,8 @@ function ContainerSVG({
         width="120"
         height={height - 40}
         rx="4"
-        fill="#0a0a0a"
-        stroke="#1a1a1a"
+        fill={BODY}
+        stroke={STROKE}
         strokeWidth="1"
       />
       {/* Cap/lid */}
@@ -40,8 +46,8 @@ function ContainerSVG({
         width="60"
         height="16"
         rx="3"
-        fill="#111"
-        stroke="#1a1a1a"
+        fill={CAP}
+        stroke={STROKE}
         strokeWidth="1"
       />
       {/* Brand wordmark */}
@@ -49,7 +55,7 @@ function ContainerSVG({
         x="100"
         y="70"
         textAnchor="middle"
-        fill="#444"
+        fill={LABEL}
         fontSize="6"
         fontFamily="monospace"
         letterSpacing="3"
@@ -61,7 +67,7 @@ function ContainerSVG({
         x="100"
         y="140"
         textAnchor="middle"
-        fill="#e8e8e8"
+        fill={NAME}
         fontSize="16"
         fontFamily="monospace"
         fontWeight="bold"
@@ -77,14 +83,14 @@ function ContainerSVG({
         y2="155"
         stroke={ACCENT}
         strokeWidth="1"
-        opacity="0.4"
+        opacity="0.6"
       />
       {/* Product type */}
       <text
         x="100"
         y="175"
         textAnchor="middle"
-        fill="#555"
+        fill={TYPE}
         fontSize="7"
         fontFamily="monospace"
         letterSpacing="2"
@@ -110,8 +116,8 @@ function StickPackSVG({ name }: { name: string }) {
         width="130"
         height="200"
         rx="3"
-        fill="#0a0a0a"
-        stroke="#1a1a1a"
+        fill={BODY}
+        stroke={STROKE}
         strokeWidth="1"
       />
       {/* Flap line */}
@@ -120,7 +126,7 @@ function StickPackSVG({ name }: { name: string }) {
         y1="55"
         x2="165"
         y2="55"
-        stroke="#151515"
+        stroke={STROKE}
         strokeWidth="1"
       />
       {/* Brand */}
@@ -128,7 +134,7 @@ function StickPackSVG({ name }: { name: string }) {
         x="100"
         y="85"
         textAnchor="middle"
-        fill="#444"
+        fill={LABEL}
         fontSize="6"
         fontFamily="monospace"
         letterSpacing="3"
@@ -140,7 +146,7 @@ function StickPackSVG({ name }: { name: string }) {
         x="100"
         y="140"
         textAnchor="middle"
-        fill="#e8e8e8"
+        fill={NAME}
         fontSize="16"
         fontFamily="monospace"
         fontWeight="bold"
@@ -156,14 +162,14 @@ function StickPackSVG({ name }: { name: string }) {
         y2="155"
         stroke={ACCENT}
         strokeWidth="1"
-        opacity="0.4"
+        opacity="0.6"
       />
       {/* Type */}
       <text
         x="100"
         y="175"
         textAnchor="middle"
-        fill="#555"
+        fill={TYPE}
         fontSize="7"
         fontFamily="monospace"
         letterSpacing="2"
@@ -179,8 +185,8 @@ function StickPackSVG({ name }: { name: string }) {
           width="16"
           height="40"
           rx="2"
-          fill="#111"
-          stroke="#1a1a1a"
+          fill={CAP}
+          stroke={STROKE}
           strokeWidth="0.5"
         />
       ))}
@@ -209,8 +215,8 @@ function CapsuleBottleSVG({
         width="90"
         height="210"
         rx="6"
-        fill="#0a0a0a"
-        stroke="#1a1a1a"
+        fill={BODY}
+        stroke={STROKE}
         strokeWidth="1"
       />
       {/* Cap */}
@@ -220,8 +226,8 @@ function CapsuleBottleSVG({
         width="60"
         height="26"
         rx="4"
-        fill="#111"
-        stroke="#1a1a1a"
+        fill={CAP}
+        stroke={STROKE}
         strokeWidth="1"
       />
       {/* Brand */}
@@ -229,7 +235,7 @@ function CapsuleBottleSVG({
         x="100"
         y="85"
         textAnchor="middle"
-        fill="#444"
+        fill={LABEL}
         fontSize="6"
         fontFamily="monospace"
         letterSpacing="3"
@@ -241,7 +247,7 @@ function CapsuleBottleSVG({
         x="100"
         y="145"
         textAnchor="middle"
-        fill="#e8e8e8"
+        fill={NAME}
         fontSize="14"
         fontFamily="monospace"
         fontWeight="bold"
@@ -257,14 +263,14 @@ function CapsuleBottleSVG({
         y2="160"
         stroke={ACCENT}
         strokeWidth="1"
-        opacity="0.4"
+        opacity="0.6"
       />
       {/* Type */}
       <text
         x="100"
         y="180"
         textAnchor="middle"
-        fill="#555"
+        fill={TYPE}
         fontSize="6"
         fontFamily="monospace"
         letterSpacing="2"
@@ -296,8 +302,8 @@ function TubSVG({
         width="140"
         height="200"
         rx="6"
-        fill="#0a0a0a"
-        stroke="#1a1a1a"
+        fill={BODY}
+        stroke={STROKE}
         strokeWidth="1"
       />
       {/* Lid */}
@@ -307,8 +313,8 @@ function TubSVG({
         width="140"
         height="22"
         rx="4"
-        fill="#111"
-        stroke="#1a1a1a"
+        fill={CAP}
+        stroke={STROKE}
         strokeWidth="1"
       />
       {/* Brand */}
@@ -316,7 +322,7 @@ function TubSVG({
         x="100"
         y="90"
         textAnchor="middle"
-        fill="#444"
+        fill={LABEL}
         fontSize="6"
         fontFamily="monospace"
         letterSpacing="3"
@@ -328,7 +334,7 @@ function TubSVG({
         x="100"
         y="150"
         textAnchor="middle"
-        fill="#e8e8e8"
+        fill={NAME}
         fontSize="18"
         fontFamily="monospace"
         fontWeight="bold"
@@ -344,14 +350,14 @@ function TubSVG({
         y2="168"
         stroke={ACCENT}
         strokeWidth="1"
-        opacity="0.4"
+        opacity="0.6"
       />
       {/* Type */}
       <text
         x="100"
         y="190"
         textAnchor="middle"
-        fill="#555"
+        fill={TYPE}
         fontSize="7"
         fontFamily="monospace"
         letterSpacing="2"

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createShopifyCart, PRODUCT_VARIANT_MAP } from "@/lib/shopify";
+import { createShopifyCart, resolveVariantId } from "@/lib/shopify";
+import { getProductById } from "@/lib/products";
 
 interface CheckoutItem {
   productId: string;
@@ -15,13 +16,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No items in cart" }, { status: 400 });
     }
 
-    const lines = items.map((item) => {
-      const variantId = PRODUCT_VARIANT_MAP[item.productId];
-      if (!variantId) {
-        throw new Error(`Unknown product: ${item.productId}`);
-      }
-      return { merchandiseId: variantId, quantity: item.quantity };
-    });
+    // Resolve Shopify variant IDs dynamically by product handle/slug
+    const lines = await Promise.all(
+      items.map(async (item) => {
+        const product = getProductById(item.productId);
+        if (!product) {
+          throw new Error(`Unknown product: ${item.productId}`);
+        }
+        const variantId = await resolveVariantId(product.slug);
+        return { merchandiseId: variantId, quantity: item.quantity };
+      })
+    );
 
     const cart = await createShopifyCart(lines);
 

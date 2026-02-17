@@ -32,6 +32,13 @@
 
   --overlay: rgba(250, 246, 240, 0.6);
   --grain-opacity: 0.3;
+
+  --product-body: #1a1510;
+  --product-cap: #252015;
+  --product-stroke: #302820;
+  --product-label: #7a6e5f;
+  --product-name: #1a1510;
+  --product-type: #9b8e7f;
 }
 
 .dark {
@@ -60,6 +67,13 @@
 
   --overlay: rgba(0, 0, 0, 0.6);
   --grain-opacity: 0.5;
+
+  --product-body: #181818;
+  --product-cap: #222222;
+  --product-stroke: #2e2e2e;
+  --product-label: #555555;
+  --product-name: #e8e8e8;
+  --product-type: #666666;
 }
 
 /* ─── Base ─── */

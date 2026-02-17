@@ -174,20 +174,23 @@ const CREATE_CART_MUTATION = `
   }
 `;
 
-// ── Variant Map ─────────────────────────────────────────────────────────────
-// Maps static product IDs ("1"–"8") to Shopify variant GIDs.
-// Replace these placeholders with real IDs from your Shopify admin.
+// ── Dynamic Variant Resolution ──────────────────────────────────────────────
+// Resolves a Shopify variant GID at checkout time by looking up the product
+// handle (which matches our static product slugs).
 
-export const PRODUCT_VARIANT_MAP: Record<string, string> = {
-  "1": "gid://shopify/ProductVariant/SIGNAL_VARIANT_ID",
-  "2": "gid://shopify/ProductVariant/COMPOUND_VARIANT_ID",
-  "3": "gid://shopify/ProductVariant/ELEMENT_VARIANT_ID",
-  "4": "gid://shopify/ProductVariant/PROTOCOL_WHEY_VARIANT_ID",
-  "5": "gid://shopify/ProductVariant/PROTOCOL_PLANT_VARIANT_ID",
-  "6": "gid://shopify/ProductVariant/BASELINE_VARIANT_ID",
-  "7": "gid://shopify/ProductVariant/CLARITY_VARIANT_ID",
-  "8": "gid://shopify/ProductVariant/DRIFT_VARIANT_ID",
-};
+export async function resolveVariantId(handle: string): Promise<string> {
+  const product = await getProductByHandle(handle);
+  if (!product) {
+    throw new Error(`Shopify product not found for handle: ${handle}`);
+  }
+  const variant =
+    product.variants.edges.find((e) => e.node.availableForSale)?.node ??
+    product.variants.edges[0]?.node;
+  if (!variant) {
+    throw new Error(`No variants available for: ${handle}`);
+  }
+  return variant.id;
+}
 
 // ── Exported Functions ──────────────────────────────────────────────────────
 
