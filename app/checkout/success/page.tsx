@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Order Confirmed | Akira",
+  title: "Order Confirmed | AKIRA LABS",
 };
 
 export default function CheckoutSuccessPage() {

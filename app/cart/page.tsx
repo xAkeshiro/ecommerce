@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
-import { formatPrice } from "@/lib/printify";
+import { formatPrice } from "@/lib/products";
+import { ProductVisual } from "@/components/product-visual";
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, totalPrice } = useCart();
@@ -14,9 +14,9 @@ export default function CartPage() {
         <h1 className="font-mono text-2xl uppercase tracking-wider text-ink">
           Your Cart
         </h1>
-        <p className="mt-4 text-sm text-ink-3">Your cart is empty.</p>
+        <p className="mt-4 text-sm text-ink-3">Your protocol awaits.</p>
         <Link href="/products" className="btn-primary mt-8 inline-flex">
-          Continue Shopping
+          Shop Now
         </Link>
       </div>
     );
@@ -33,33 +33,22 @@ export default function CartPage() {
           <ul className="divide-y divide-line">
             {items.map((item, i) => (
               <li
-                key={`${item.productId}-${item.variantId}-${item.designOption ?? ""}`}
+                key={item.productId}
                 className="animate-fade-up flex gap-6 py-6"
                 style={{ animationDelay: `${i * 0.05}s` }}
               >
                 <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-sm border border-line bg-card">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                    sizes="96px"
-                  />
+                  <ProductVisual image={item.image} name={item.name} subtitle={item.subtitle} />
                 </div>
 
                 <div className="flex flex-1 flex-col justify-between">
                   <div className="flex justify-between">
                     <div>
                       <h3 className="font-mono text-xs uppercase tracking-wider text-ink">
-                        {item.title}
+                        {item.name}
                       </h3>
                       <p className="mt-1 text-sm text-ink-muted">
-                        {item.variantTitle}
-                        {item.designOption && (
-                          <span className="badge ml-2">
-                            Design {item.designOption}
-                          </span>
-                        )}
+                        {item.subtitle}
                       </p>
                     </div>
                     <p className="font-mono text-sm text-ink">
@@ -71,12 +60,7 @@ export default function CartPage() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() =>
-                          updateQuantity(
-                            item.productId,
-                            item.variantId,
-                            item.quantity - 1,
-                            item.designOption
-                          )
+                          updateQuantity(item.productId, item.quantity - 1)
                         }
                         className="flex h-7 w-7 items-center justify-center border border-line font-mono text-xs text-ink-muted transition-colors hover:border-line-hover hover:text-ink"
                       >
@@ -87,12 +71,7 @@ export default function CartPage() {
                       </span>
                       <button
                         onClick={() =>
-                          updateQuantity(
-                            item.productId,
-                            item.variantId,
-                            item.quantity + 1,
-                            item.designOption
-                          )
+                          updateQuantity(item.productId, item.quantity + 1)
                         }
                         className="flex h-7 w-7 items-center justify-center border border-line font-mono text-xs text-ink-muted transition-colors hover:border-line-hover hover:text-ink"
                       >
@@ -100,9 +79,7 @@ export default function CartPage() {
                       </button>
                     </div>
                     <button
-                      onClick={() =>
-                        removeItem(item.productId, item.variantId, item.designOption)
-                      }
+                      onClick={() => removeItem(item.productId)}
                       className="font-mono text-[10px] uppercase tracking-wider text-ink-faint transition-colors hover:text-ink"
                     >
                       Remove
@@ -142,12 +119,9 @@ export default function CartPage() {
             >
               Proceed to Checkout
             </Link>
-            <Link
-              href="/products"
-              className="mt-4 block text-center font-mono text-[10px] uppercase tracking-wider text-ink-faint transition-colors hover:text-ink-muted"
-            >
-              Continue Shopping
-            </Link>
+            <p className="mt-4 text-center font-mono text-[9px] uppercase tracking-[2px] text-ink-faint">
+              Free shipping over $100
+            </p>
           </div>
         </div>
       </div>

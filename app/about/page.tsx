@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "About | Akira",
-  description: "Learn about Akira, our custom print-on-demand store.",
+  title: "About | AKIRA LABS",
+  description: "Performance supplements engineered for discipline. Clinical doses. Zero filler. Tokyo-based.",
 };
 
 export default function AboutPage() {
@@ -11,28 +11,28 @@ export default function AboutPage() {
           About
         </p>
         <h1 className="mt-2 text-3xl font-light tracking-tight text-ink">
-          Akira
+          Akira Labs
         </h1>
       </div>
 
       <div className="mt-10 space-y-8 text-sm leading-relaxed text-ink-3">
         <p className="animate-fade-up" style={{ animationDelay: "0.1s" }}>
-          We create unique, custom-made products that are printed and shipped on
-          demand. Every item in our store is designed with care and produced only
-          when you order it — reducing waste and ensuring you get something
-          truly special.
+          Born in Tokyo, built for discipline. AKIRA LABS creates performance
+          supplements stripped to what works. No proprietary blends, no
+          unnecessary fillers, no compromises. Every formula is engineered with
+          clinical doses of researched ingredients — nothing more, nothing less.
         </p>
 
         <div className="animate-fade-up" style={{ animationDelay: "0.2s" }}>
           <h2 className="font-mono text-xs uppercase tracking-wider text-ink-muted">
-            How It Works
+            The Protocol
           </h2>
           <div className="mt-4 space-y-0 border-t border-line">
             {[
-              { step: "01", label: "Browse", desc: "Explore our collection of custom designs." },
-              { step: "02", label: "Order", desc: "Choose your size, color, and design option." },
-              { step: "03", label: "We Print", desc: "Your order is printed with premium materials." },
-              { step: "04", label: "Delivered", desc: "Shipped directly to your doorstep." },
+              { step: "01", label: "Research", desc: "Every ingredient backed by peer-reviewed studies." },
+              { step: "02", label: "Formulate", desc: "Clinical doses only. Zero proprietary blends." },
+              { step: "03", label: "Test", desc: "Third-party verified for purity and potency." },
+              { step: "04", label: "Deliver", desc: "Direct to your door. No middlemen, no markup." },
             ].map((item) => (
               <div key={item.step} className="detail-spec">
                 <span className="font-mono text-xs text-ink-faint">{item.step}</span>
@@ -47,22 +47,25 @@ export default function AboutPage() {
 
         <div className="animate-fade-up" style={{ animationDelay: "0.3s" }}>
           <h2 className="font-mono text-xs uppercase tracking-wider text-ink-muted">
-            Quality Promise
+            Clean Formulations
           </h2>
           <p className="mt-3">
-            We partner with top-tier print providers to ensure every product meets
-            our high standards. From the inks to the fabrics, quality is at the
-            core of everything we do.
+            We work with certified manufacturers to produce supplements that
+            meet the highest standards. No artificial colors, no unnecessary
+            binders, no fillers. Just what your body needs to perform at its
+            best.
           </p>
         </div>
 
         <div className="animate-fade-up" style={{ animationDelay: "0.4s" }}>
           <h2 className="font-mono text-xs uppercase tracking-wider text-ink-muted">
-            Sustainability
+            Transparency
           </h2>
           <p className="mt-3">
-            Print-on-demand means zero overproduction. We only create what you
-            order, minimizing waste and our environmental footprint.
+            Every product label shows the exact dose of every ingredient. No
+            hiding behind proprietary blends. You deserve to know exactly what
+            you&apos;re putting in your body. Every batch is third-party tested
+            and certificates of analysis are available on request.
           </p>
         </div>
       </div>

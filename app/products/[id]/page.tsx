@@ -1,57 +1,36 @@
 import { notFound } from "next/navigation";
-import {
-  getProduct,
-  getEnabledVariants,
-  getDefaultImage,
-} from "@/lib/printify";
+import { PRODUCTS, getProductBySlug } from "@/lib/products";
 import { ProductDetail } from "@/components/product-detail";
 
 interface Props {
   params: { id: string };
 }
 
-export async function generateMetadata({ params }: Props) {
-  try {
-    const product = await getProduct(params.id);
-    return {
-      title: `${product.title} | Akira`,
-      description: product.description.replace(/<[^>]*>/g, "").slice(0, 160),
-    };
-  } catch {
-    return { title: "Product Not Found | Akira" };
-  }
+export function generateStaticParams() {
+  return PRODUCTS.map((p) => ({ id: p.slug }));
 }
 
-export default async function ProductPage({ params }: Props) {
-  let product;
-  try {
-    product = await getProduct(params.id);
-  } catch {
+export function generateMetadata({ params }: Props) {
+  const product = getProductBySlug(params.id);
+  if (!product) {
+    return { title: "Product Not Found | AKIRA LABS" };
+  }
+  return {
+    title: `${product.name} — ${product.subtitle} | AKIRA LABS`,
+    description: product.description.slice(0, 160),
+  };
+}
+
+export default function ProductPage({ params }: Props) {
+  const product = getProductBySlug(params.id);
+
+  if (!product) {
     notFound();
   }
 
-  const variants = getEnabledVariants(product);
-  const defaultImage = getDefaultImage(product);
-
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <ProductDetail
-        product={{
-          id: product.id,
-          title: product.title,
-          description: product.description,
-          images: product.images.map((img) => img.src),
-          options: product.options,
-          variants: variants.map((v) => ({
-            id: v.id,
-            title: v.title,
-            price: v.price,
-            options: v.options,
-            is_available: v.is_available,
-          })),
-          defaultImage,
-        }}
-      />
+      <ProductDetail product={product} />
     </div>
   );
 }

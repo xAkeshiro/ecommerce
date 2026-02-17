@@ -6,9 +6,9 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Akira | Custom Print-on-Demand",
+  title: "AKIRA LABS — Engineered for Discipline",
   description:
-    "Shop unique custom-made products at Akira. High-quality print-on-demand apparel, accessories, and more.",
+    "Performance supplements engineered for discipline. Clinical doses. Zero filler. Tokyo-based.",
 };
 
 export default function RootLayout({

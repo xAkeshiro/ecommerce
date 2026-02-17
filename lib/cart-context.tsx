@@ -4,13 +4,12 @@ import { createContext, useContext, useReducer, useEffect, ReactNode } from "rea
 
 export interface CartItem {
   productId: string;
-  variantId: number;
-  title: string;
-  variantTitle: string;
+  name: string;
+  subtitle: string;
   price: number;
   quantity: number;
   image: string;
-  designOption?: "A" | "B";
+  slug: string;
 }
 
 interface CartState {
@@ -19,28 +18,16 @@ interface CartState {
 
 type CartAction =
   | { type: "ADD_ITEM"; payload: CartItem }
-  | { type: "REMOVE_ITEM"; payload: { productId: string; variantId: number; designOption?: "A" | "B" } }
-  | {
-      type: "UPDATE_QUANTITY";
-      payload: { productId: string; variantId: number; designOption?: "A" | "B"; quantity: number };
-    }
+  | { type: "REMOVE_ITEM"; payload: { productId: string } }
+  | { type: "UPDATE_QUANTITY"; payload: { productId: string; quantity: number } }
   | { type: "CLEAR_CART" }
   | { type: "LOAD_CART"; payload: CartItem[] };
-
-function itemKey(item: { productId: string; variantId: number; designOption?: "A" | "B" }) {
-  return `${item.productId}-${item.variantId}-${item.designOption ?? ""}`;
-}
 
 interface CartContextType {
   items: CartItem[];
   addItem: (item: CartItem) => void;
-  removeItem: (productId: string, variantId: number, designOption?: "A" | "B") => void;
-  updateQuantity: (
-    productId: string,
-    variantId: number,
-    quantity: number,
-    designOption?: "A" | "B"
-  ) => void;
+  removeItem: (productId: string) => void;
+  updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
@@ -48,25 +35,16 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-function matchItem(
-  item: CartItem,
-  payload: { productId: string; variantId: number; designOption?: "A" | "B" }
-) {
-  return (
-    item.productId === payload.productId &&
-    item.variantId === payload.variantId &&
-    (item.designOption ?? "") === (payload.designOption ?? "")
-  );
-}
-
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case "ADD_ITEM": {
-      const existing = state.items.find((item) => matchItem(item, action.payload));
+      const existing = state.items.find(
+        (item) => item.productId === action.payload.productId
+      );
       if (existing) {
         return {
           items: state.items.map((item) =>
-            matchItem(item, action.payload)
+            item.productId === action.payload.productId
               ? { ...item, quantity: item.quantity + action.payload.quantity }
               : item
           ),
@@ -76,17 +54,21 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     }
     case "REMOVE_ITEM":
       return {
-        items: state.items.filter((item) => !matchItem(item, action.payload)),
+        items: state.items.filter(
+          (item) => item.productId !== action.payload.productId
+        ),
       };
     case "UPDATE_QUANTITY":
       if (action.payload.quantity <= 0) {
         return {
-          items: state.items.filter((item) => !matchItem(item, action.payload)),
+          items: state.items.filter(
+            (item) => item.productId !== action.payload.productId
+          ),
         };
       }
       return {
         items: state.items.map((item) =>
-          matchItem(item, action.payload)
+          item.productId === action.payload.productId
             ? { ...item, quantity: action.payload.quantity }
             : item
         ),
@@ -100,12 +82,11 @@ function cartReducer(state: CartState, action: CartAction): CartState {
   }
 }
 
-const CART_STORAGE_KEY = "akira-cart";
+const CART_STORAGE_KEY = "akira-labs-cart";
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [] });
 
-  // Load cart from localStorage on mount
   useEffect(() => {
     try {
       const saved = localStorage.getItem(CART_STORAGE_KEY);
@@ -117,7 +98,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // Save cart to localStorage on changes
   useEffect(() => {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state.items));
   }, [state.items]);
@@ -125,18 +105,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addItem = (item: CartItem) =>
     dispatch({ type: "ADD_ITEM", payload: item });
 
-  const removeItem = (productId: string, variantId: number, designOption?: "A" | "B") =>
-    dispatch({ type: "REMOVE_ITEM", payload: { productId, variantId, designOption } });
+  const removeItem = (productId: string) =>
+    dispatch({ type: "REMOVE_ITEM", payload: { productId } });
 
-  const updateQuantity = (
-    productId: string,
-    variantId: number,
-    quantity: number,
-    designOption?: "A" | "B"
-  ) =>
+  const updateQuantity = (productId: string, quantity: number) =>
     dispatch({
       type: "UPDATE_QUANTITY",
-      payload: { productId, variantId, quantity, designOption },
+      payload: { productId, quantity },
     });
 
   const clearCart = () => dispatch({ type: "CLEAR_CART" });

@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import { useCart } from "@/lib/cart-context";
-import { formatPrice } from "@/lib/printify";
+import { formatPrice } from "@/lib/products";
 import Link from "next/link";
 
 export default function CheckoutPage() {
@@ -44,8 +44,9 @@ export default function CheckoutPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           items: items.map((item) => ({
-            product_id: item.productId,
-            variant_id: item.variantId,
+            productId: item.productId,
+            name: item.name,
+            price: item.price,
             quantity: item.quantity,
           })),
           address: {
@@ -174,12 +175,11 @@ export default function CheckoutPage() {
           <ul className="mt-4 divide-y divide-line">
             {items.map((item) => (
               <li
-                key={`${item.productId}-${item.variantId}-${item.designOption ?? ""}`}
+                key={item.productId}
                 className="flex justify-between py-3 text-sm"
               >
                 <span className="text-ink-3">
-                  {item.title} ({item.variantTitle}
-                  {item.designOption && ` / Design ${item.designOption}`}) x{item.quantity}
+                  {item.name} ({item.subtitle}) x{item.quantity}
                 </span>
                 <span className="font-mono text-ink">
                   {formatPrice(item.price * item.quantity)}

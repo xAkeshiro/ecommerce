@@ -22,7 +22,7 @@ export function Header() {
           <div className="h-2 w-2 bg-ink" />
         </div>
         <span className="font-mono text-xs tracking-[6px] text-ink uppercase">
-          Akira
+          Akira Labs
         </span>
       </Link>
 

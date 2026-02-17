@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
-import { getProduct, formatPrice } from "@/lib/printify";
+import { getProductById } from "@/lib/products";
 
 interface CheckoutItem {
-  product_id: string;
-  variant_id: number;
+  productId: string;
+  name: string;
+  price: number;
   quantity: number;
 }
 
@@ -30,37 +31,27 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No items in cart" }, { status: 400 });
     }
 
-    // Build Stripe line items from Printify products
-    const lineItems = await Promise.all(
-      items.map(async (item) => {
-        const product = await getProduct(item.product_id);
-        const variant = product.variants.find((v) => v.id === item.variant_id);
+    const lineItems = items.map((item) => {
+      const product = getProductById(item.productId);
+      const name = product ? product.name : item.name;
+      const subtitle = product ? product.subtitle : "";
+      const unitAmount = product ? product.price : item.price;
 
-        if (!variant) {
-          throw new Error(`Variant ${item.variant_id} not found`);
-        }
-
-        return {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: product.title,
-              description: variant.title,
-              images: product.images
-                .filter((img) => img.is_default)
-                .map((img) => img.src)
-                .slice(0, 1),
-            },
-            unit_amount: variant.price,
+      return {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name,
+            description: subtitle,
           },
-          quantity: item.quantity,
-        };
-      })
-    );
+          unit_amount: unitAmount,
+        },
+        quantity: item.quantity,
+      };
+    });
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-    // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
@@ -72,10 +63,9 @@ export async function POST(request: NextRequest) {
         allowed_countries: ["US", "CA", "GB", "AU", "DE", "FR"],
       },
       metadata: {
-        printify_items: JSON.stringify(
+        order_items: JSON.stringify(
           items.map((i) => ({
-            product_id: i.product_id,
-            variant_id: i.variant_id,
+            productId: i.productId,
             quantity: i.quantity,
           }))
         ),
