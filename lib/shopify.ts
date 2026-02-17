@@ -175,19 +175,52 @@ const CREATE_CART_MUTATION = `
 `;
 
 // ── Dynamic Variant Resolution ──────────────────────────────────────────────
-// Resolves a Shopify variant GID at checkout time by looking up the product
-// handle (which matches our static product slugs).
+// Fetches all Shopify products once, then matches by handle or title.
+// Caches the result so subsequent calls in the same request don't re-fetch.
 
-export async function resolveVariantId(handle: string): Promise<string> {
-  const product = await getProductByHandle(handle);
+let cachedProducts: ShopifyProduct[] | null = null;
+
+async function getAllShopifyProducts(): Promise<ShopifyProduct[]> {
+  if (cachedProducts) return cachedProducts;
+  cachedProducts = await getProducts(50);
+  return cachedProducts;
+}
+
+export async function resolveVariantId(slug: string, name: string): Promise<string> {
+  const products = await getAllShopifyProducts();
+  const lower = slug.toLowerCase();
+  const nameLower = name.toLowerCase();
+
+  // 1. Exact handle match
+  let product = products.find((p) => p.handle === lower);
+
+  // 2. Handle contains our slug (e.g. "compound-whey-isolate" contains "compound")
   if (!product) {
-    throw new Error(`Shopify product not found for handle: ${handle}`);
+    product = products.find((p) => p.handle.includes(lower));
   }
+
+  // 3. Title match (case-insensitive)
+  if (!product) {
+    product = products.find((p) => p.title.toLowerCase().includes(nameLower));
+  }
+
+  // 4. Our name contained in their handle
+  if (!product) {
+    product = products.find((p) => p.handle.includes(nameLower));
+  }
+
+  if (!product) {
+    const available = products.map((p) => `"${p.handle}" (${p.title})`).join(", ");
+    throw new Error(
+      `No Shopify product matched slug="${slug}" or name="${name}". Available: ${available}`
+    );
+  }
+
   const variant =
     product.variants.edges.find((e) => e.node.availableForSale)?.node ??
     product.variants.edges[0]?.node;
   if (!variant) {
-    throw new Error(`No variants available for: ${handle}`);
+    throw new Error(`No variants available for: ${product.title}`);
   }
   return variant.id;
 }

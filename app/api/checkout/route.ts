@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
         if (!product) {
           throw new Error(`Unknown product: ${item.productId}`);
         }
-        const variantId = await resolveVariantId(product.slug);
+        const variantId = await resolveVariantId(product.slug, product.name);
         return { merchandiseId: variantId, quantity: item.quantity };
       })
     );
