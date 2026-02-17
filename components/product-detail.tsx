@@ -22,6 +22,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
       price: product.price,
       quantity,
       image: product.image,
+      imageUrl: product.imageUrl,
       slug: product.slug,
     });
 
@@ -34,7 +35,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
       {/* Visual */}
       <div className="animate-fade-up">
         <div className="relative aspect-square overflow-hidden rounded-sm border border-line bg-card">
-          <ProductVisual image={product.image} name={product.name} subtitle={product.subtitle} />
+          <ProductVisual image={product.image} imageUrl={product.imageUrl} name={product.name} subtitle={product.subtitle} />
           {product.badge && (
             <span className="badge absolute left-4 top-4">
               {product.badge}

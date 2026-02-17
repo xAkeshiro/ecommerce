@@ -9,6 +9,7 @@ export interface Product {
   details: string[];
   badge: string | null;
   image: string;
+  imageUrl?: string;
   tagline: string;
   active: boolean;
 }
@@ -203,4 +204,39 @@ export function getProductById(id: string): Product | undefined {
 export function getProductsByCategory(category: CategoryId): Product[] {
   if (category === "all") return PRODUCTS.filter((p) => p.active);
   return PRODUCTS.filter((p) => p.active && p.category === category);
+}
+
+/**
+ * Fetches Shopify products and merges image URLs into local product data.
+ * Matches by slug/handle using fuzzy matching (slug contained in handle or vice versa).
+ */
+export async function getProductsWithImages(): Promise<Product[]> {
+  try {
+    const { getProducts } = await import("@/lib/shopify");
+    const shopifyProducts = await getProducts(50);
+
+    return PRODUCTS.map((product) => {
+      const slug = product.slug.toLowerCase();
+      const nameLower = product.name.toLowerCase();
+
+      const match = shopifyProducts.find(
+        (sp) =>
+          sp.handle === slug ||
+          sp.handle.includes(slug) ||
+          slug.includes(sp.handle) ||
+          sp.title.toLowerCase().includes(nameLower)
+      );
+
+      const imageUrl = match?.images?.edges?.[0]?.node?.url;
+      return imageUrl ? { ...product, imageUrl } : product;
+    });
+  } catch (e) {
+    console.error("Failed to fetch Shopify images:", e);
+    return PRODUCTS;
+  }
+}
+
+export async function getProductBySlugWithImage(slug: string): Promise<Product | undefined> {
+  const products = await getProductsWithImages();
+  return products.find((p) => p.slug === slug);
 }

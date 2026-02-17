@@ -1,10 +1,13 @@
 import Link from "next/link";
-import { PRODUCTS } from "@/lib/products";
+import { getProductsWithImages } from "@/lib/products";
 import { ProductCard } from "@/components/product-card";
 import { ProtocolBundle } from "@/components/protocol-bundle";
 
-export default function HomePage() {
-  const products = PRODUCTS.filter((p) => p.active);
+export const revalidate = 60;
+
+export default async function HomePage() {
+  const allProducts = await getProductsWithImages();
+  const products = allProducts.filter((p) => p.active);
 
   return (
     <>

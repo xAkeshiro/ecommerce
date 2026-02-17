@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
-import { PRODUCTS, getProductBySlug } from "@/lib/products";
+import { PRODUCTS, getProductBySlug, getProductBySlugWithImage } from "@/lib/products";
 import { ProductDetail } from "@/components/product-detail";
+
+export const revalidate = 60;
 
 interface Props {
   params: { id: string };
@@ -21,8 +23,8 @@ export function generateMetadata({ params }: Props) {
   };
 }
 
-export default function ProductPage({ params }: Props) {
-  const product = getProductBySlug(params.id);
+export default async function ProductPage({ params }: Props) {
+  const product = await getProductBySlugWithImage(params.id);
 
   if (!product) {
     notFound();

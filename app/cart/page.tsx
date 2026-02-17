@@ -38,7 +38,7 @@ export default function CartPage() {
                 style={{ animationDelay: `${i * 0.05}s` }}
               >
                 <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-sm border border-line bg-card">
-                  <ProductVisual image={item.image} name={item.name} subtitle={item.subtitle} />
+                  <ProductVisual image={item.image} imageUrl={item.imageUrl} name={item.name} subtitle={item.subtitle} />
                 </div>
 
                 <div className="flex flex-1 flex-col justify-between">

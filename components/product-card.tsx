@@ -10,7 +10,7 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link href={`/products/${product.slug}`} className="product-card group block">
       <div className="product-img-wrap relative aspect-square overflow-hidden rounded-sm border border-line bg-card transition-colors">
-        <ProductVisual image={product.image} name={product.name} subtitle={product.subtitle} />
+        <ProductVisual image={product.image} imageUrl={product.imageUrl} name={product.name} subtitle={product.subtitle} />
         {product.badge && (
           <span className="badge absolute left-3 top-3">
             {product.badge}

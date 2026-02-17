@@ -1,5 +1,8 @@
+import Image from "next/image";
+
 interface ProductVisualProps {
   image: string;
+  imageUrl?: string;
   name: string;
   subtitle: string;
 }
@@ -394,8 +397,23 @@ const VISUAL_MAP: Record<
 
 export function ProductVisual({
   image,
+  imageUrl,
   name,
 }: ProductVisualProps) {
+  if (imageUrl) {
+    return (
+      <div className="relative h-full w-full bg-card">
+        <Image
+          src={imageUrl}
+          alt={name}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          className="object-cover"
+        />
+      </div>
+    );
+  }
+
   const renderer = VISUAL_MAP[image];
   if (!renderer) {
     return (

@@ -1,13 +1,10 @@
-"use client";
+import { getProductsWithImages } from "@/lib/products";
+import { ProductsGrid } from "@/components/products-grid";
 
-import { useState } from "react";
-import { PRODUCTS, type CategoryId, getProductsByCategory } from "@/lib/products";
-import { ProductCard } from "@/components/product-card";
-import { CategoryFilter } from "@/components/category-filter";
+export const revalidate = 60;
 
-export default function ProductsPage() {
-  const [category, setCategory] = useState<CategoryId>("all");
-  const products = getProductsByCategory(category);
+export default async function ProductsPage() {
+  const products = await getProductsWithImages();
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -23,17 +20,7 @@ export default function ProductsPage() {
         </p>
       </div>
 
-      <div className="mt-8">
-        <CategoryFilter active={category} onChange={setCategory} />
-      </div>
-
-      <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {products.map((product, i) => (
-          <div key={product.id} className="animate-fade-up" style={{ animationDelay: `${i * 0.05}s` }}>
-            <ProductCard product={product} />
-          </div>
-        ))}
-      </div>
+      <ProductsGrid products={products} />
     </div>
   );
 }
