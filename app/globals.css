@@ -201,3 +201,42 @@
     @apply flex justify-between py-3 text-xs border-b border-line-subtle;
   }
 }
+
+/* ─── Marquee ─── */
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+/* ─── Collection card ─── */
+
+.collection-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.collection-card:hover {
+  transform: scale(1.01);
+}
+.collection-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--border-primary);
+  pointer-events: none;
+  transition: border-color 0.3s;
+}
+.collection-card:hover::after {
+  border-color: var(--border-hover);
+}

@@ -29,7 +29,7 @@ export function Header() {
       {/* Nav links */}
       <div className="flex items-center gap-8">
         <Link href="/products" className="nav-link hidden sm:block">
-          Shop
+          Wellness
         </Link>
         <Link href="/about" className="nav-link hidden sm:block">
           About

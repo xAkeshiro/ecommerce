@@ -6,9 +6,9 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "AKIRA LABS — Engineered for Discipline",
+  title: "AKIRA LABS — Performance Meets Ritual",
   description:
-    "Performance supplements engineered for discipline. Clinical doses. Zero filler. Tokyo-based.",
+    "Clinical-dose supplements and clean beauty — engineered for those who refuse to compromise. Wellness and beauty, stripped to what works.",
 };
 
 export default function RootLayout({

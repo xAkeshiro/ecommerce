@@ -1,6 +1,6 @@
 export const metadata = {
   title: "About | AKIRA LABS",
-  description: "Performance supplements engineered for discipline. Clinical doses. Zero filler. Tokyo-based.",
+  description: "Clinical-dose supplements and clean beauty — engineered for those who refuse to compromise.",
 };
 
 export default function AboutPage() {
@@ -17,10 +17,11 @@ export default function AboutPage() {
 
       <div className="mt-10 space-y-8 text-sm leading-relaxed text-ink-3">
         <p className="animate-fade-up" style={{ animationDelay: "0.1s" }}>
-          Born in Tokyo, built for discipline. AKIRA LABS creates performance
-          supplements stripped to what works. No proprietary blends, no
-          unnecessary fillers, no compromises. Every formula is engineered with
-          clinical doses of researched ingredients — nothing more, nothing less.
+          Born in Tokyo, built for discipline. AKIRA LABS sits at the intersection
+          of wellness and beauty — creating clinical-dose supplements and clean skincare
+          for those who refuse to compromise. No proprietary blends, no unnecessary fillers,
+          no inflated claims. Every formula is engineered with researched ingredients at
+          effective doses — nothing more, nothing less.
         </p>
 
         <div className="animate-fade-up" style={{ animationDelay: "0.2s" }}>
@@ -47,13 +48,26 @@ export default function AboutPage() {
 
         <div className="animate-fade-up" style={{ animationDelay: "0.3s" }}>
           <h2 className="font-mono text-xs uppercase tracking-wider text-ink-muted">
+            Two Worlds, One Standard
+          </h2>
+          <p className="mt-3">
+            Whether it&apos;s a pre-workout or a serum, we apply the same rigor. Our
+            wellness line delivers clinical-dose supplements — proteins, nootropics,
+            and daily essentials built for performance. Our beauty line (arriving soon)
+            brings that same philosophy to skincare: minimal ingredients, maximum results,
+            total transparency.
+          </p>
+        </div>
+
+        <div className="animate-fade-up" style={{ animationDelay: "0.35s" }}>
+          <h2 className="font-mono text-xs uppercase tracking-wider text-ink-muted">
             Clean Formulations
           </h2>
           <p className="mt-3">
-            We work with certified manufacturers to produce supplements that
+            We work with certified manufacturers to produce products that
             meet the highest standards. No artificial colors, no unnecessary
             binders, no fillers. Just what your body needs to perform at its
-            best.
+            best — inside and out.
           </p>
         </div>
 
@@ -64,7 +78,7 @@ export default function AboutPage() {
           <p className="mt-3">
             Every product label shows the exact dose of every ingredient. No
             hiding behind proprietary blends. You deserve to know exactly what
-            you&apos;re putting in your body. Every batch is third-party tested
+            you&apos;re putting in and on your body. Every batch is third-party tested
             and certificates of analysis are available on request.
           </p>
         </div>
