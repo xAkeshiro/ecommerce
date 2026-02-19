@@ -8,7 +8,7 @@ import { Footer } from "@/components/footer";
 export const metadata: Metadata = {
   title: "AKIRA LABS — Performance Meets Ritual",
   description:
-    "Clinical-dose supplements and clean beauty — engineered for those who refuse to compromise. Wellness and beauty, stripped to what works.",
+    "Clinical-dose supplements engineered for those who refuse to compromise. Wellness, stripped to what works.",
 };
 
 export default function RootLayout({

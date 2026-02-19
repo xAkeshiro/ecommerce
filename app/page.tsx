@@ -22,7 +22,7 @@ export default async function HomePage() {
           <div className="lg:col-span-6 xl:col-span-5">
             <div className="animate-fade-up">
               <span className="font-mono text-[10px] uppercase tracking-[4px] text-ink-muted">
-                Wellness &middot; Beauty
+                Wellness
               </span>
             </div>
 
@@ -33,16 +33,13 @@ export default async function HomePage() {
             </h1>
 
             <p className="animate-fade-up mt-8 max-w-md text-[15px] leading-relaxed text-ink-3" style={{ animationDelay: "0.2s" }}>
-              Clinical-dose supplements and clean beauty — engineered for those who
-              refuse to compromise. No fillers. No shortcuts. Just what works.
+              Clinical-dose supplements engineered for those who refuse to
+              compromise. No fillers. No shortcuts. Just what works.
             </p>
 
             <div className="animate-fade-up mt-10 flex flex-wrap gap-4" style={{ animationDelay: "0.3s" }}>
               <Link href="/products" className="btn-primary">
                 Shop Wellness
-              </Link>
-              <Link href="/products" className="btn-outline">
-                Beauty — Coming Soon
               </Link>
             </div>
 
@@ -117,7 +114,7 @@ export default async function HomePage() {
             <div key={j} className="flex shrink-0 items-center gap-12 px-6">
               {[
                 "Clinical Doses",
-                "Clean Beauty",
+                "Science Backed",
                 "Zero Filler",
                 "Third-Party Tested",
                 "No Proprietary Blends",
@@ -135,54 +132,30 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* ── Collections ── */}
+      {/* ── Collection ── */}
       <section className="border-b border-line">
-        <div className="grid grid-cols-1 md:grid-cols-2">
-          {/* Wellness */}
-          <Link
-            href="/products"
-            className="collection-card group flex flex-col justify-between border-b border-line p-10 sm:p-16 md:border-b-0 md:border-r"
-          >
-            <div>
-              <span className="font-mono text-[9px] uppercase tracking-[3px] text-ink-faint">
-                01
-              </span>
-              <h2 className="mt-4 text-3xl font-light tracking-tight text-ink sm:text-4xl">
-                Wellness
-              </h2>
-              <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-3">
-                Performance supplements engineered for discipline. Clinical doses of researched
-                ingredients — pre-workouts, proteins, nootropics, and daily essentials.
-              </p>
-            </div>
-            <div className="mt-8">
-              <span className="font-mono text-[10px] uppercase tracking-[2px] text-ink-2 transition-colors group-hover:text-ink">
-                Shop Now &rarr;
-              </span>
-            </div>
-          </Link>
-
-          {/* Beauty */}
-          <div className="collection-card flex flex-col justify-between p-10 sm:p-16">
-            <div>
-              <span className="font-mono text-[9px] uppercase tracking-[3px] text-ink-faint">
-                02
-              </span>
-              <h2 className="mt-4 text-3xl font-light tracking-tight text-ink sm:text-4xl">
-                Beauty
-              </h2>
-              <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-3">
-                Clean skincare rooted in science. Minimal ingredients, maximum results.
-                Serums, moisturizers, and treatments — arriving soon.
-              </p>
-            </div>
-            <div className="mt-8">
-              <span className="font-mono text-[10px] uppercase tracking-[2px] text-ink-faint">
-                Coming Soon
-              </span>
-            </div>
+        <Link
+          href="/products"
+          className="collection-card group flex flex-col justify-between p-10 sm:p-16"
+        >
+          <div>
+            <span className="font-mono text-[9px] uppercase tracking-[3px] text-ink-faint">
+              01
+            </span>
+            <h2 className="mt-4 text-3xl font-light tracking-tight text-ink sm:text-4xl">
+              Wellness
+            </h2>
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-3">
+              Performance supplements engineered for discipline. Clinical doses of researched
+              ingredients — pre-workouts, proteins, nootropics, and daily essentials.
+            </p>
           </div>
-        </div>
+          <div className="mt-8">
+            <span className="font-mono text-[10px] uppercase tracking-[2px] text-ink-2 transition-colors group-hover:text-ink">
+              Shop Now &rarr;
+            </span>
+          </div>
+        </Link>
       </section>
 
       {/* ── Featured Products ── */}
@@ -233,8 +206,8 @@ export default async function HomePage() {
                 More signal.
               </h2>
               <p className="mt-6 max-w-md text-sm leading-relaxed text-ink-3">
-                We started AKIRA LABS because the wellness and beauty industries are
-                full of noise — proprietary blends, inflated claims, unnecessary additives.
+                We started AKIRA LABS because the wellness industry is full of
+                noise — proprietary blends, inflated claims, unnecessary additives.
                 We believe in radical transparency: every ingredient, every dose, every test
                 result — out in the open.
               </p>

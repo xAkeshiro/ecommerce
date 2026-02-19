@@ -10,7 +10,7 @@ export function Footer() {
             Akira Labs
           </span>
           <p className="mt-3 max-w-xs text-xs leading-relaxed text-ink-muted">
-            Wellness and beauty, engineered for those who refuse to compromise.
+            Wellness, engineered for those who refuse to compromise.
           </p>
         </div>
 
