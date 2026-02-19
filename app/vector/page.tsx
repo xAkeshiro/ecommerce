@@ -227,7 +227,7 @@ export default function VectorPage() {
         <h2 className="font-mono text-xs uppercase tracking-wider text-ink-muted">
           Full Logo — Symbol + Wordmark
         </h2>
-        <div className="mt-6 grid grid-cols-1 gap-10 lg:grid-cols-3">
+        <div className="mt-6 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Black on White */}
           <VariantCard
             label="Black"
@@ -252,16 +252,28 @@ export default function VectorPage() {
             <LogoSVG color="#e8e8e8" bg="#060606" id="logo-full-white" />
           </VariantCard>
 
-          {/* Transparent */}
+          {/* Black Transparent */}
           <VariantCard
-            label="Transparent"
-            description="No background"
-            svgId="logo-full-transparent"
-            svgFilename="akira-labs-logo-transparent.svg"
-            pngFilename="akira-labs-logo-transparent.png"
+            label="Black Transparent"
+            description="Dark mark, no background"
+            svgId="logo-full-black-transparent"
+            svgFilename="akira-labs-logo-black-transparent.svg"
+            pngFilename="akira-labs-logo-black-transparent.png"
+            bgClass="bg-[repeating-conic-gradient(#ddd_0%_25%,#eee_0%_50%)] bg-[length:16px_16px]"
+          >
+            <LogoSVG color="#060606" bg={null} id="logo-full-black-transparent" />
+          </VariantCard>
+
+          {/* White Transparent */}
+          <VariantCard
+            label="White Transparent"
+            description="Light mark, no background"
+            svgId="logo-full-white-transparent"
+            svgFilename="akira-labs-logo-white-transparent.svg"
+            pngFilename="akira-labs-logo-white-transparent.png"
             bgClass="bg-[repeating-conic-gradient(#222_0%_25%,#1a1a1a_0%_50%)] bg-[length:16px_16px]"
           >
-            <LogoSVG color="#e8e8e8" bg={null} id="logo-full-transparent" />
+            <LogoSVG color="#e8e8e8" bg={null} id="logo-full-white-transparent" />
           </VariantCard>
         </div>
       </div>
@@ -271,7 +283,7 @@ export default function VectorPage() {
         <h2 className="font-mono text-xs uppercase tracking-wider text-ink-muted">
           Symbol — Icon Only
         </h2>
-        <div className="mt-6 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Black on White */}
           <VariantCard
             label="Black"
@@ -300,21 +312,31 @@ export default function VectorPage() {
             </div>
           </VariantCard>
 
-          {/* Transparent */}
+          {/* Black Transparent */}
           <VariantCard
-            label="Transparent"
-            description="No background"
-            svgId="symbol-transparent"
-            svgFilename="akira-labs-symbol-transparent.svg"
-            pngFilename="akira-labs-symbol-transparent.png"
+            label="Black Transparent"
+            description="Dark mark, no background"
+            svgId="symbol-black-transparent"
+            svgFilename="akira-labs-symbol-black-transparent.svg"
+            pngFilename="akira-labs-symbol-black-transparent.png"
+            bgClass="bg-[repeating-conic-gradient(#ddd_0%_25%,#eee_0%_50%)] bg-[length:16px_16px]"
+          >
+            <div className="mx-auto w-24">
+              <SymbolOnlySVG color="#060606" bg={null} id="symbol-black-transparent" />
+            </div>
+          </VariantCard>
+
+          {/* White Transparent */}
+          <VariantCard
+            label="White Transparent"
+            description="Light mark, no background"
+            svgId="symbol-white-transparent"
+            svgFilename="akira-labs-symbol-white-transparent.svg"
+            pngFilename="akira-labs-symbol-white-transparent.png"
             bgClass="bg-[repeating-conic-gradient(#222_0%_25%,#1a1a1a_0%_50%)] bg-[length:16px_16px]"
           >
             <div className="mx-auto w-24">
-              <SymbolOnlySVG
-                color="#e8e8e8"
-                bg={null}
-                id="symbol-transparent"
-              />
+              <SymbolOnlySVG color="#e8e8e8" bg={null} id="symbol-white-transparent" />
             </div>
           </VariantCard>
         </div>
