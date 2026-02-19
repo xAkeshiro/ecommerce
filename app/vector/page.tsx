@@ -1,7 +1,5 @@
 "use client";
 
-import { useRef } from "react";
-
 function LogoSVG({
   color,
   bg,
@@ -98,11 +96,59 @@ function downloadSVG(elementId: string, filename: string) {
   URL.revokeObjectURL(url);
 }
 
+function downloadPNG(elementId: string, filename: string, scale: number = 4) {
+  const svg = document.getElementById(elementId) as SVGSVGElement | null;
+  if (!svg) return;
+
+  const viewBox = svg.getAttribute("viewBox");
+  if (!viewBox) return;
+  const [, , vbW, vbH] = viewBox.split(" ").map(Number);
+
+  const width = vbW * scale;
+  const height = vbH * scale;
+
+  const serializer = new XMLSerializer();
+  let source = serializer.serializeToString(svg);
+  if (!source.match(/^<svg[^>]+xmlns="http:\/\/www\.w3\.org\/2000\/svg"/)) {
+    source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const img = new Image();
+  const blob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+
+  img.onload = () => {
+    ctx.drawImage(img, 0, 0, width, height);
+    URL.revokeObjectURL(url);
+
+    canvas.toBlob((pngBlob) => {
+      if (!pngBlob) return;
+      const pngUrl = URL.createObjectURL(pngBlob);
+      const a = document.createElement("a");
+      a.href = pngUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(pngUrl);
+    }, "image/png");
+  };
+
+  img.src = url;
+}
+
 interface VariantCardProps {
   label: string;
   description: string;
   svgId: string;
-  filename: string;
+  svgFilename: string;
+  pngFilename: string;
   bgClass: string;
   children: React.ReactNode;
 }
@@ -111,7 +157,8 @@ function VariantCard({
   label,
   description,
   svgId,
-  filename,
+  svgFilename,
+  pngFilename,
   bgClass,
   children,
 }: VariantCardProps) {
@@ -122,19 +169,37 @@ function VariantCard({
       >
         <div className="w-full max-w-xs">{children}</div>
       </div>
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="font-mono text-xs uppercase tracking-wider text-ink">
-            {label}
-          </p>
-          <p className="mt-0.5 text-[11px] text-ink-muted">{description}</p>
+      <div>
+        <p className="font-mono text-xs uppercase tracking-wider text-ink">
+          {label}
+        </p>
+        <p className="mt-0.5 text-[11px] text-ink-muted">{description}</p>
+        <div className="mt-3 flex gap-2">
+          <button
+            onClick={() => downloadSVG(svgId, svgFilename)}
+            className="btn-outline text-[9px] px-4 py-2"
+          >
+            SVG
+          </button>
+          <button
+            onClick={() => downloadPNG(svgId, pngFilename, 4)}
+            className="btn-outline text-[9px] px-4 py-2"
+          >
+            PNG @4x
+          </button>
+          <button
+            onClick={() => downloadPNG(svgId, pngFilename.replace(".png", "@2x.png"), 2)}
+            className="btn-outline text-[9px] px-4 py-2"
+          >
+            PNG @2x
+          </button>
+          <button
+            onClick={() => downloadPNG(svgId, pngFilename.replace(".png", "@1x.png"), 1)}
+            className="btn-outline text-[9px] px-4 py-2"
+          >
+            PNG @1x
+          </button>
         </div>
-        <button
-          onClick={() => downloadSVG(svgId, filename)}
-          className="btn-outline text-[9px] px-4 py-2"
-        >
-          Download SVG
-        </button>
       </div>
     </div>
   );
@@ -151,9 +216,9 @@ export default function VectorPage() {
           Logo &amp; Vector
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-ink-3">
-          Official AKIRA LABS logo vectors. Available in black, white, and
-          transparent variants. All files are SVG format for infinite
-          scalability.
+          Official AKIRA LABS logo assets. Available in black, white, and
+          transparent variants. Download as SVG for infinite scalability or
+          PNG at 1x, 2x, and 4x resolutions.
         </p>
       </div>
 
@@ -168,7 +233,8 @@ export default function VectorPage() {
             label="Black"
             description="For light backgrounds"
             svgId="logo-full-black"
-            filename="akira-labs-logo-black.svg"
+            svgFilename="akira-labs-logo-black.svg"
+            pngFilename="akira-labs-logo-black.png"
             bgClass="bg-white"
           >
             <LogoSVG color="#060606" bg="#ffffff" id="logo-full-black" />
@@ -179,7 +245,8 @@ export default function VectorPage() {
             label="White"
             description="For dark backgrounds"
             svgId="logo-full-white"
-            filename="akira-labs-logo-white.svg"
+            svgFilename="akira-labs-logo-white.svg"
+            pngFilename="akira-labs-logo-white.png"
             bgClass="bg-[#060606]"
           >
             <LogoSVG color="#e8e8e8" bg="#060606" id="logo-full-white" />
@@ -190,7 +257,8 @@ export default function VectorPage() {
             label="Transparent"
             description="No background"
             svgId="logo-full-transparent"
-            filename="akira-labs-logo-transparent.svg"
+            svgFilename="akira-labs-logo-transparent.svg"
+            pngFilename="akira-labs-logo-transparent.png"
             bgClass="bg-[repeating-conic-gradient(#222_0%_25%,#1a1a1a_0%_50%)] bg-[length:16px_16px]"
           >
             <LogoSVG color="#e8e8e8" bg={null} id="logo-full-transparent" />
@@ -209,7 +277,8 @@ export default function VectorPage() {
             label="Black"
             description="For light backgrounds"
             svgId="symbol-black"
-            filename="akira-labs-symbol-black.svg"
+            svgFilename="akira-labs-symbol-black.svg"
+            pngFilename="akira-labs-symbol-black.png"
             bgClass="bg-white"
           >
             <div className="mx-auto w-24">
@@ -222,7 +291,8 @@ export default function VectorPage() {
             label="White"
             description="For dark backgrounds"
             svgId="symbol-white"
-            filename="akira-labs-symbol-white.svg"
+            svgFilename="akira-labs-symbol-white.svg"
+            pngFilename="akira-labs-symbol-white.png"
             bgClass="bg-[#060606]"
           >
             <div className="mx-auto w-24">
@@ -235,7 +305,8 @@ export default function VectorPage() {
             label="Transparent"
             description="No background"
             svgId="symbol-transparent"
-            filename="akira-labs-symbol-transparent.svg"
+            svgFilename="akira-labs-symbol-transparent.svg"
+            pngFilename="akira-labs-symbol-transparent.png"
             bgClass="bg-[repeating-conic-gradient(#222_0%_25%,#1a1a1a_0%_50%)] bg-[length:16px_16px]"
           >
             <div className="mx-auto w-24">
@@ -275,6 +346,11 @@ export default function VectorPage() {
               rule: "Distortion",
               detail:
                 "Do not stretch, rotate, skew, or add effects to the logo.",
+            },
+            {
+              rule: "PNG Usage",
+              detail:
+                "Use @4x for print and retina displays, @2x for standard retina, @1x for web thumbnails. Prefer SVG when possible.",
             },
           ].map((item) => (
             <div key={item.rule} className="detail-spec">
