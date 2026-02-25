@@ -227,8 +227,15 @@ export async function getProductsWithImages(): Promise<Product[]> {
           sp.title.toLowerCase().includes(nameLower)
       );
 
-      const imageUrl = match?.images?.edges?.[0]?.node?.url;
-      return imageUrl ? { ...product, imageUrl } : product;
+      if (!match) return product;
+
+      const imageUrl = match.images?.edges?.[0]?.node?.url;
+      const shopifyPrice = match.priceRange?.minVariantPrice?.amount;
+      const price = shopifyPrice
+        ? Math.round(parseFloat(shopifyPrice) * 100)
+        : product.price;
+
+      return { ...product, price, ...(imageUrl ? { imageUrl } : {}) };
     });
   } catch (e) {
     console.error("Failed to fetch Shopify images:", e);
