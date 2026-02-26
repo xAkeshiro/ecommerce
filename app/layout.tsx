@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/lib/theme-context";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { BackToTop } from "@/components/back-to-top";
+import { SplashScreen } from "@/components/splash-screen";
 
 export const metadata: Metadata = {
   title: "AKIRA LABS — Performance Meets Ritual",
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <CartProvider>
+            <SplashScreen />
             <div className="grain-overlay" />
             <div className="relative flex min-h-screen flex-col">
               <Header />
