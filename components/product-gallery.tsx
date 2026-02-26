@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import Image from "next/image";
 import { ProductVisual } from "@/components/product-visual";
 
 interface ProductGalleryProps {
   image: string;
   imageUrl?: string;
+  imageUrls?: string[];
   name: string;
   subtitle: string;
   badge?: string | null;
@@ -14,17 +16,20 @@ interface ProductGalleryProps {
 export function ProductGallery({
   image,
   imageUrl,
+  imageUrls,
   name,
   subtitle,
   badge,
 }: ProductGalleryProps) {
-  // For now, duplicate the same image 3 times as placeholders.
-  // Replace with real image arrays when available.
-  const slides = [
-    { image, imageUrl, label: "Front" },
-    { image, imageUrl, label: "Side" },
-    { image, imageUrl, label: "Detail" },
-  ];
+  // Build slides from Shopify images if available, otherwise fall back to SVG
+  const slides =
+    imageUrls && imageUrls.length > 0
+      ? imageUrls.map((url, i) => ({ url, label: i === 0 ? "Front" : `View ${i + 1}` }))
+      : imageUrl
+        ? [{ url: imageUrl, label: "Front" }]
+        : [];
+
+  const hasSvgOnly = slides.length === 0;
 
   const [active, setActive] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -60,13 +65,28 @@ export function ProductGallery({
 
   // Keyboard navigation
   useEffect(() => {
+    if (hasSvgOnly) return;
     function handleKey(e: KeyboardEvent) {
       if (e.key === "ArrowLeft") goTo(active - 1);
       if (e.key === "ArrowRight") goTo(active + 1);
     }
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [active, goTo]);
+  }, [active, goTo, hasSvgOnly]);
+
+  // Fallback: single SVG visual (no carousel needed)
+  if (hasSvgOnly) {
+    return (
+      <div className="animate-fade-up">
+        <div className="relative aspect-square overflow-hidden rounded-sm border border-line bg-card">
+          <ProductVisual image={image} imageUrl={imageUrl} name={name} subtitle={subtitle} />
+          {badge && (
+            <span className="badge absolute left-4 top-4 z-10">{badge}</span>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="animate-fade-up">
@@ -89,11 +109,13 @@ export function ProductGallery({
         >
           {slides.map((slide, i) => (
             <div key={i} className="relative h-full" style={{ width: `${100 / slides.length}%` }}>
-              <ProductVisual
-                image={slide.image}
-                imageUrl={slide.imageUrl}
-                name={name}
-                subtitle={subtitle}
+              <Image
+                src={slide.url}
+                alt={`${name} — ${slide.label}`}
+                fill
+                sizes="(max-width: 640px) 100vw, 50vw"
+                className="object-cover"
+                priority={i === 0}
               />
             </div>
           ))}
@@ -105,44 +127,49 @@ export function ProductGallery({
         )}
 
         {/* Dot indicators (mobile) */}
-        <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2 sm:hidden">
-          {slides.map((_, i) => (
+        {slides.length > 1 && (
+          <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2 sm:hidden">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  i === active
+                    ? "w-4 bg-ink"
+                    : "w-1.5 bg-ink-faint"
+                }`}
+                aria-label={`View image ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Thumbnails — only show if more than 1 image */}
+      {slides.length > 1 && (
+        <div className="mt-3 flex gap-2">
+          {slides.map((slide, i) => (
             <button
               key={i}
               onClick={() => goTo(i)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
+              className={`relative aspect-square w-16 overflow-hidden rounded-sm border transition-all duration-300 sm:w-20 ${
                 i === active
-                  ? "w-4 bg-ink"
-                  : "w-1.5 bg-ink-faint"
+                  ? "border-ink"
+                  : "border-line opacity-60 hover:opacity-100"
               }`}
-              aria-label={`View image ${i + 1}`}
-            />
+              aria-label={`View ${slide.label}`}
+            >
+              <Image
+                src={slide.url}
+                alt={`${name} — ${slide.label}`}
+                fill
+                sizes="80px"
+                className="object-cover"
+              />
+            </button>
           ))}
         </div>
-      </div>
-
-      {/* Thumbnails (visible on all sizes) */}
-      <div className="mt-3 flex gap-2">
-        {slides.map((slide, i) => (
-          <button
-            key={i}
-            onClick={() => goTo(i)}
-            className={`relative aspect-square w-16 overflow-hidden rounded-sm border transition-all duration-300 sm:w-20 ${
-              i === active
-                ? "border-ink"
-                : "border-line opacity-60 hover:opacity-100"
-            }`}
-            aria-label={`View ${slide.label}`}
-          >
-            <ProductVisual
-              image={slide.image}
-              imageUrl={slide.imageUrl}
-              name={name}
-              subtitle={subtitle}
-            />
-          </button>
-        ))}
-      </div>
+      )}
     </div>
   );
 }

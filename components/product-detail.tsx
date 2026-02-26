@@ -131,6 +131,7 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
         <ProductGallery
           image={product.image}
           imageUrl={product.imageUrl}
+          imageUrls={product.imageUrls}
           name={product.name}
           subtitle={product.subtitle}
           badge={product.badge}

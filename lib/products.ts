@@ -10,6 +10,7 @@ export interface Product {
   badge: string | null;
   image: string;
   imageUrl?: string;
+  imageUrls?: string[];
   tagline: string;
   active: boolean;
 }
@@ -229,13 +230,19 @@ export async function getProductsWithImages(): Promise<Product[]> {
 
       if (!match) return product;
 
-      const imageUrl = match.images?.edges?.[0]?.node?.url;
+      const allImageUrls = match.images?.edges?.map((e) => e.node.url).filter(Boolean) || [];
+      const imageUrl = allImageUrls[0];
       const shopifyPrice = match.priceRange?.minVariantPrice?.amount;
       const price = shopifyPrice
         ? Math.round(parseFloat(shopifyPrice) * 100)
         : product.price;
 
-      return { ...product, price, ...(imageUrl ? { imageUrl } : {}) };
+      return {
+        ...product,
+        price,
+        ...(imageUrl ? { imageUrl } : {}),
+        ...(allImageUrls.length > 0 ? { imageUrls: allImageUrls } : {}),
+      };
     });
   } catch (e) {
     console.error("Failed to fetch Shopify images:", e);
