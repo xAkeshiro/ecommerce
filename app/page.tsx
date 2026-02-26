@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getProductsWithImages } from "@/lib/products";
+import { TESTIMONIALS } from "@/lib/product-data";
 import { ProductCard } from "@/components/product-card";
+import { NewsletterForm } from "@/components/newsletter-form";
 
 export const revalidate = 60;
 
@@ -192,6 +194,33 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ── Testimonials ── */}
+      <section className="border-t border-line">
+        <div className="mx-auto max-w-7xl px-6 py-20 sm:px-10">
+          <p className="font-mono text-[10px] uppercase tracking-[3px] text-ink-faint">
+            The Community
+          </p>
+          <h2 className="mt-3 text-2xl font-light tracking-tight text-ink">
+            What people are saying
+          </h2>
+          <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+            {TESTIMONIALS.map((t, i) => (
+              <div key={i} className="border border-line p-8">
+                <p className="text-sm leading-relaxed text-ink-3 italic">
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <div className="mt-6">
+                  <p className="font-mono text-xs text-ink">{t.name}</p>
+                  <p className="mt-1 font-mono text-[9px] uppercase tracking-[2px] text-ink-faint">
+                    {t.product}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Philosophy ── */}
       <section className="border-t border-line bg-card">
         <div className="mx-auto max-w-7xl px-6 py-20 sm:px-10">
@@ -250,6 +279,13 @@ export default async function HomePage() {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── Newsletter ── */}
+      <section className="border-t border-line">
+        <div className="mx-auto max-w-xl px-6 py-20 text-center sm:px-10">
+          <NewsletterForm />
         </div>
       </section>
     </>

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { PRODUCTS, getProductBySlug, getProductBySlugWithImage } from "@/lib/products";
+import { PRODUCTS, getProductBySlug, getProductsWithImages } from "@/lib/products";
 import { ProductDetail } from "@/components/product-detail";
 
 export const revalidate = 60;
@@ -24,7 +24,8 @@ export function generateMetadata({ params }: Props) {
 }
 
 export default async function ProductPage({ params }: Props) {
-  const product = await getProductBySlugWithImage(params.id);
+  const allProducts = await getProductsWithImages();
+  const product = allProducts.find((p) => p.slug === params.id);
 
   if (!product) {
     notFound();
@@ -32,7 +33,7 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <ProductDetail product={product} />
+      <ProductDetail product={product} allProducts={allProducts} />
     </div>
   );
 }
