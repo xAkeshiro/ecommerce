@@ -74,7 +74,7 @@ export function CartContent({ allProducts }: { allProducts: Product[] }) {
           href="/products"
           className="font-mono text-[10px] uppercase tracking-[2px] text-ink-muted transition-colors hover:text-ink"
         >
-          Continue Shopping &rarr;
+          &larr; Continue Shopping
         </Link>
       </div>
 

@@ -4,6 +4,7 @@ import { getProductsWithImages } from "@/lib/products";
 import { TESTIMONIALS } from "@/lib/product-data";
 import { ProductCard } from "@/components/product-card";
 import { NewsletterForm } from "@/components/newsletter-form";
+import { ScrollFade } from "@/components/scroll-fade";
 
 export const revalidate = 60;
 
@@ -136,59 +137,62 @@ export default async function HomePage() {
 
       {/* ── Collection ── */}
       <section className="border-b border-line">
-        <Link
-          href="/products"
-          className="collection-card group flex flex-col justify-between p-10 sm:p-16"
-        >
-          <div>
-            <span className="font-mono text-[9px] uppercase tracking-[3px] text-ink-faint">
-              01
-            </span>
-            <h2 className="mt-4 text-3xl font-light tracking-tight text-ink sm:text-4xl">
-              Wellness
-            </h2>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-3">
-              Performance supplements engineered for discipline. Clinical doses of researched
-              ingredients — pre-workouts, proteins, nootropics, and daily essentials.
-            </p>
-          </div>
-          <div className="mt-8">
-            <span className="font-mono text-[10px] uppercase tracking-[2px] text-ink-2 transition-colors group-hover:text-ink">
-              Shop Now &rarr;
-            </span>
-          </div>
-        </Link>
+        <ScrollFade>
+          <Link
+            href="/products"
+            className="collection-card group flex flex-col justify-between p-10 sm:p-16"
+          >
+            <div>
+              <span className="font-mono text-[9px] uppercase tracking-[3px] text-ink-faint">
+                01
+              </span>
+              <h2 className="mt-4 text-3xl font-light tracking-tight text-ink sm:text-4xl">
+                Wellness
+              </h2>
+              <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-3">
+                Performance supplements engineered for discipline. Clinical doses of researched
+                ingredients — pre-workouts, proteins, nootropics, and daily essentials.
+              </p>
+            </div>
+            <div className="mt-8">
+              <span className="font-mono text-[10px] uppercase tracking-[2px] text-ink-2 transition-colors group-hover:text-ink">
+                Shop Now &rarr;
+              </span>
+            </div>
+          </Link>
+        </ScrollFade>
       </section>
 
       {/* ── Featured Products ── */}
       <section>
         <div className="mx-auto max-w-7xl px-6 py-20 sm:px-10">
-          <div className="flex items-end justify-between">
-            <div>
-              <p className="font-mono text-[10px] uppercase tracking-[3px] text-ink-faint">
-                Featured
-              </p>
-              <h2 className="mt-3 text-2xl font-light tracking-tight text-ink">
-                The Protocol
-              </h2>
+          <ScrollFade>
+            <div className="flex items-end justify-between">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[3px] text-ink-faint">
+                  Featured
+                </p>
+                <h2 className="mt-3 text-2xl font-light tracking-tight text-ink">
+                  The Protocol
+                </h2>
+              </div>
+              <Link
+                href="/products"
+                className="font-mono text-[10px] uppercase tracking-[2px] text-ink-muted transition-colors hover:text-ink"
+              >
+                View all &rarr;
+              </Link>
             </div>
-            <Link
-              href="/products"
-              className="font-mono text-[10px] uppercase tracking-[2px] text-ink-muted transition-colors hover:text-ink"
-            >
-              View all &rarr;
-            </Link>
-          </div>
+          </ScrollFade>
 
           <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {products.slice(0, 8).map((product, i) => (
-              <div
+              <ScrollFade
                 key={product.id}
-                className="animate-fade-up"
-                style={{ animationDelay: `${i * 0.06}s` }}
+                delay={i * 0.06}
               >
                 <ProductCard product={product} />
-              </div>
+              </ScrollFade>
             ))}
           </div>
         </div>
@@ -197,25 +201,29 @@ export default async function HomePage() {
       {/* ── Testimonials ── */}
       <section className="border-t border-line">
         <div className="mx-auto max-w-7xl px-6 py-20 sm:px-10">
-          <p className="font-mono text-[10px] uppercase tracking-[3px] text-ink-faint">
-            The Community
-          </p>
-          <h2 className="mt-3 text-2xl font-light tracking-tight text-ink">
-            What people are saying
-          </h2>
+          <ScrollFade>
+            <p className="font-mono text-[10px] uppercase tracking-[3px] text-ink-faint">
+              The Community
+            </p>
+            <h2 className="mt-3 text-2xl font-light tracking-tight text-ink">
+              What people are saying
+            </h2>
+          </ScrollFade>
           <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
             {TESTIMONIALS.map((t, i) => (
-              <div key={i} className="border border-line p-8">
-                <p className="text-sm leading-relaxed text-ink-3 italic">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="mt-6">
-                  <p className="font-mono text-xs text-ink">{t.name}</p>
-                  <p className="mt-1 font-mono text-[9px] uppercase tracking-[2px] text-ink-faint">
-                    {t.product}
+              <ScrollFade key={i} delay={i * 0.1}>
+                <div className="border border-line p-8">
+                  <p className="text-sm leading-relaxed text-ink-3 italic">
+                    &ldquo;{t.quote}&rdquo;
                   </p>
+                  <div className="mt-6">
+                    <p className="font-mono text-xs text-ink">{t.name}</p>
+                    <p className="mt-1 font-mono text-[9px] uppercase tracking-[2px] text-ink-faint">
+                      {t.product}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </ScrollFade>
             ))}
           </div>
         </div>
@@ -225,59 +233,63 @@ export default async function HomePage() {
       <section className="border-t border-line bg-card">
         <div className="mx-auto max-w-7xl px-6 py-20 sm:px-10">
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
-            <div>
-              <p className="font-mono text-[10px] uppercase tracking-[3px] text-ink-faint">
-                Philosophy
-              </p>
-              <h2 className="mt-4 text-3xl font-light tracking-tight text-ink sm:text-4xl">
-                Less noise.
-                <br />
-                More signal.
-              </h2>
-              <p className="mt-6 max-w-md text-sm leading-relaxed text-ink-3">
-                We started AKIRA LABS because the wellness industry is full of
-                noise — proprietary blends, inflated claims, unnecessary additives.
-                We believe in radical transparency: every ingredient, every dose, every test
-                result — out in the open.
-              </p>
-              <Link
-                href="/about"
-                className="mt-8 inline-block font-mono text-[10px] uppercase tracking-[2px] text-ink-2 transition-colors hover:text-ink"
-              >
-                Our Story &rarr;
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 gap-0 border border-line sm:grid-cols-3">
-              {[
-                {
-                  step: "01",
-                  title: "Research",
-                  desc: "Peer-reviewed studies behind every ingredient.",
-                },
-                {
-                  step: "02",
-                  title: "Formulate",
-                  desc: "Clinical doses only. Zero proprietary blends.",
-                },
-                {
-                  step: "03",
-                  title: "Verify",
-                  desc: "Third-party tested for purity and potency.",
-                },
-              ].map((item, i) => (
-                <div
-                  key={item.step}
-                  className={`p-6 ${i < 2 ? "border-b border-line sm:border-b-0 sm:border-r" : ""}`}
+            <ScrollFade>
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[3px] text-ink-faint">
+                  Philosophy
+                </p>
+                <h2 className="mt-4 text-3xl font-light tracking-tight text-ink sm:text-4xl">
+                  Less noise.
+                  <br />
+                  More signal.
+                </h2>
+                <p className="mt-6 max-w-md text-sm leading-relaxed text-ink-3">
+                  We started AKIRA LABS because the wellness industry is full of
+                  noise — proprietary blends, inflated claims, unnecessary additives.
+                  We believe in radical transparency: every ingredient, every dose, every test
+                  result — out in the open.
+                </p>
+                <Link
+                  href="/about"
+                  className="mt-8 inline-block font-mono text-[10px] uppercase tracking-[2px] text-ink-2 transition-colors hover:text-ink"
                 >
-                  <span className="font-mono text-2xl font-bold text-ink-faint">{item.step}</span>
-                  <h3 className="mt-3 font-mono text-xs uppercase tracking-[2px] text-ink">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-xs leading-relaxed text-ink-3">{item.desc}</p>
-                </div>
-              ))}
-            </div>
+                  Our Story &rarr;
+                </Link>
+              </div>
+            </ScrollFade>
+
+            <ScrollFade delay={0.15}>
+              <div className="grid grid-cols-1 gap-0 border border-line sm:grid-cols-3">
+                {[
+                  {
+                    step: "01",
+                    title: "Research",
+                    desc: "Peer-reviewed studies behind every ingredient.",
+                  },
+                  {
+                    step: "02",
+                    title: "Formulate",
+                    desc: "Clinical doses only. Zero proprietary blends.",
+                  },
+                  {
+                    step: "03",
+                    title: "Verify",
+                    desc: "Third-party tested for purity and potency.",
+                  },
+                ].map((item, i) => (
+                  <div
+                    key={item.step}
+                    className={`p-6 ${i < 2 ? "border-b border-line sm:border-b-0 sm:border-r" : ""}`}
+                  >
+                    <span className="font-mono text-2xl font-bold text-ink-faint">{item.step}</span>
+                    <h3 className="mt-3 font-mono text-xs uppercase tracking-[2px] text-ink">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-xs leading-relaxed text-ink-3">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </ScrollFade>
           </div>
         </div>
       </section>
@@ -285,7 +297,9 @@ export default async function HomePage() {
       {/* ── Newsletter ── */}
       <section className="border-t border-line">
         <div className="mx-auto max-w-xl px-6 py-20 text-center sm:px-10">
-          <NewsletterForm />
+          <ScrollFade>
+            <NewsletterForm />
+          </ScrollFade>
         </div>
       </section>
     </>
