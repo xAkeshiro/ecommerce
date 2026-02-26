@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { getProductsWithImages } from "@/lib/products";
 import { TESTIMONIALS } from "@/lib/product-data";
 import { ProductCard } from "@/components/product-card";
@@ -11,101 +10,71 @@ export const revalidate = 60;
 export default async function HomePage() {
   const allProducts = await getProductsWithImages();
   const products = allProducts.filter((p) => p.active);
-  const heroProducts = products.slice(0, 4);
 
   return (
     <>
       {/* ── Hero ── */}
-      <section className="relative min-h-screen overflow-hidden">
-        {/* Subtle background accent */}
-        <div className="pointer-events-none absolute -right-40 top-20 h-[600px] w-[600px] rounded-full opacity-[0.03]" style={{ background: "radial-gradient(circle, var(--text-primary) 0%, transparent 70%)" }} />
+      <section
+        className="hero"
+        style={{ backgroundImage: "url('/images/hero-scene.jpg')" }}
+      >
+        {/* Gradient overlay */}
+        <div className="hero-overlay" />
 
-        <div className="mx-auto grid min-h-screen max-w-7xl grid-cols-1 items-center gap-8 px-6 pt-32 pb-16 sm:px-10 lg:grid-cols-12 lg:gap-16 lg:pt-0">
-          {/* Left: Editorial text */}
-          <div className="lg:col-span-6 xl:col-span-5">
+        {/* Text content — left-aligned on desktop, centered on mobile */}
+        <div className="relative z-10 flex h-full items-center px-6 sm:px-[8%]">
+          <div className="w-full max-w-lg text-center sm:max-w-[40%] sm:text-left">
             <div className="animate-fade-up">
               <span className="font-mono text-[10px] uppercase tracking-[4px] text-ink-muted">
                 Wellness
               </span>
             </div>
 
-            <h1 className="animate-fade-up mt-6 text-[clamp(2.5rem,6vw,4.5rem)] font-light leading-[1.05] tracking-tight text-ink" style={{ animationDelay: "0.1s" }}>
+            <h1
+              className="animate-fade-up mt-6 text-[clamp(2.5rem,6vw,4.5rem)] font-light leading-[1.05] tracking-tight text-ink"
+              style={{ animationDelay: "0.1s" }}
+            >
               Performance
               <br />
               meets <em className="font-normal italic">ritual.</em>
             </h1>
 
-            <p className="animate-fade-up mt-8 max-w-md text-[15px] leading-relaxed text-ink-3" style={{ animationDelay: "0.2s" }}>
+            <p
+              className="animate-fade-up mx-auto mt-8 max-w-md text-[15px] leading-relaxed text-ink-3 sm:mx-0"
+              style={{ animationDelay: "0.2s" }}
+            >
               Clinical-dose supplements engineered for those who refuse to
               compromise. No fillers. No shortcuts. Just what works.
             </p>
 
-            <div className="animate-fade-up mt-10 flex flex-wrap gap-4" style={{ animationDelay: "0.3s" }}>
+            <div
+              className="animate-fade-up mt-10 flex flex-wrap justify-center gap-4 sm:justify-start"
+              style={{ animationDelay: "0.3s" }}
+            >
               <Link href="/products" className="btn-primary">
                 Shop Wellness
               </Link>
             </div>
-
-            {/* Micro stats */}
-            <div className="animate-fade-up mt-16 flex gap-12" style={{ animationDelay: "0.4s" }}>
-              {[
-                { value: "8+", label: "Formulas" },
-                { value: "100%", label: "Transparent" },
-                { value: "0", label: "Fillers" },
-              ].map((stat) => (
-                <div key={stat.label}>
-                  <p className="font-mono text-2xl font-bold text-ink">{stat.value}</p>
-                  <p className="mt-1 font-mono text-[9px] uppercase tracking-[2px] text-ink-muted">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right: Product image mosaic */}
-          <div className="animate-fade-up lg:col-span-6 xl:col-span-7" style={{ animationDelay: "0.3s" }}>
-            <div className="grid grid-cols-2 gap-3">
-              {heroProducts.map((product, i) => (
-                <Link
-                  key={product.id}
-                  href={`/products/${product.slug}`}
-                  className="group relative aspect-[3/4] overflow-hidden rounded-sm border border-line bg-card transition-all duration-500 hover:border-line-hover"
-                  style={{ animationDelay: `${0.3 + i * 0.1}s` }}
-                >
-                  {product.imageUrl ? (
-                    <Image
-                      src={product.imageUrl}
-                      alt={product.name}
-                      fill
-                      sizes="(max-width: 1024px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="flex h-full items-center justify-center">
-                      <span className="font-mono text-sm tracking-[4px] text-ink-muted">
-                        {product.name}
-                      </span>
-                    </div>
-                  )}
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/50 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <p className="font-mono text-[10px] uppercase tracking-[2px] text-white">
-                      {product.name}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-6 animate-fade-in sm:left-10" style={{ animationDelay: "1s" }}>
-          <div className="flex items-center gap-3">
-            <div className="h-px w-8 bg-line" />
-            <span className="font-mono text-[9px] uppercase tracking-[3px] text-ink-faint">
-              Scroll
-            </span>
+        {/* Stats bar — pinned to bottom */}
+        <div className="hero-stats-strip absolute inset-x-0 bottom-0 z-10 border-t border-line/30">
+          <div className="animate-fade-up flex items-center justify-center gap-8 px-6 py-4 sm:gap-16 sm:px-10" style={{ animationDelay: "0.4s" }}>
+            {[
+              { value: "8+", label: "Formulas" },
+              { value: "100%", label: "Transparent" },
+              { value: "0", label: "Fillers" },
+            ].map((stat) => (
+              <div key={stat.label} className="text-center">
+                <p className="font-mono text-lg font-bold text-ink sm:text-2xl">
+                  {stat.value}
+                </p>
+                <p className="mt-0.5 font-mono text-[8px] uppercase tracking-[2px] text-ink-muted sm:text-[9px]">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

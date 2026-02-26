@@ -33,6 +33,21 @@
   --overlay: rgba(250, 246, 240, 0.6);
   --grain-opacity: 0.3;
 
+  --hero-gradient: linear-gradient(
+    to right,
+    rgba(245, 240, 235, 0.92) 0%,
+    rgba(245, 240, 235, 0.75) 40%,
+    rgba(245, 240, 235, 0.2) 70%,
+    transparent 100%
+  );
+  --hero-gradient-mobile: linear-gradient(
+    to bottom,
+    rgba(245, 240, 235, 0.88) 0%,
+    rgba(245, 240, 235, 0.7) 50%,
+    rgba(245, 240, 235, 0.5) 100%
+  );
+  --hero-stats-bg: rgba(245, 240, 235, 0.75);
+
   --product-body: #1a1510;
   --product-cap: #252015;
   --product-stroke: #302820;
@@ -67,6 +82,21 @@
 
   --overlay: rgba(0, 0, 0, 0.6);
   --grain-opacity: 0.5;
+
+  --hero-gradient: linear-gradient(
+    to right,
+    rgba(18, 18, 18, 0.92) 0%,
+    rgba(18, 18, 18, 0.75) 40%,
+    rgba(18, 18, 18, 0.2) 70%,
+    transparent 100%
+  );
+  --hero-gradient-mobile: linear-gradient(
+    to bottom,
+    rgba(18, 18, 18, 0.92) 0%,
+    rgba(18, 18, 18, 0.78) 50%,
+    rgba(18, 18, 18, 0.55) 100%
+  );
+  --hero-stats-bg: rgba(18, 18, 18, 0.75);
 
   --product-body: #181818;
   --product-cap: #222222;
@@ -263,4 +293,41 @@
 }
 .collection-card:hover::after {
   border-color: var(--border-hover);
+}
+
+/* ─── Hero ─── */
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 75vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .hero {
+    height: 88vh;
+  }
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--hero-gradient-mobile);
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .hero-overlay {
+    background: var(--hero-gradient);
+  }
+}
+
+.hero-stats-strip {
+  background: var(--hero-stats-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
