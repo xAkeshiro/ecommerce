@@ -1,21 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { useTheme } from "@/lib/theme-context";
 import { SearchOverlay } from "@/components/search-overlay";
+import { AnnouncementBar } from "@/components/announcement-bar";
 
 export function Header() {
   const { totalItems } = useCart();
   const { theme, toggleTheme } = useTheme();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [announcementVisible, setAnnouncementVisible] = useState(false);
+
+  const handleAnnouncementChange = useCallback((visible: boolean) => {
+    setAnnouncementVisible(visible);
+  }, []);
 
   return (
     <>
+      <AnnouncementBar onVisibilityChange={handleAnnouncementChange} />
       <nav
-        className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-5 sm:px-10 animate-fade-in"
+        className="fixed left-0 right-0 z-40 flex items-center justify-between px-6 py-5 sm:px-10 animate-fade-in transition-[top] duration-300"
         style={{
+          top: announcementVisible ? "36px" : "0px",
           background:
             "linear-gradient(180deg, var(--bg-primary) 60%, transparent)",
         }}

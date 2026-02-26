@@ -4,21 +4,28 @@ import { useState, useEffect } from "react";
 
 const DISMISSED_KEY = "akira-labs-announcement-dismissed";
 
-export function AnnouncementBar() {
+export function AnnouncementBar({
+  onVisibilityChange,
+}: {
+  onVisibilityChange?: (visible: boolean) => void;
+}) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     try {
       if (!sessionStorage.getItem(DISMISSED_KEY)) {
         setVisible(true);
+        onVisibilityChange?.(true);
       }
     } catch {
       setVisible(true);
+      onVisibilityChange?.(true);
     }
-  }, []);
+  }, [onVisibilityChange]);
 
   function dismiss() {
     setVisible(false);
+    onVisibilityChange?.(false);
     try {
       sessionStorage.setItem(DISMISSED_KEY, "1");
     } catch {
@@ -29,7 +36,7 @@ export function AnnouncementBar() {
   if (!visible) return null;
 
   return (
-    <div className="relative z-50 border-b border-line bg-btn-bg py-2.5 text-center">
+    <div className="fixed top-0 left-0 right-0 z-50 border-b border-line bg-btn-bg py-2.5 text-center">
       <p className="font-mono text-[9px] uppercase tracking-[3px] text-btn-text">
         Free shipping over $100 &middot; Subscribe &amp; save 15%
       </p>
