@@ -14,10 +14,12 @@ export default async function HomePage() {
   return (
     <>
       {/* ── Hero ── */}
-      <section
-        className="hero"
-        style={{ backgroundImage: "url('/images/hero-scene.jpg')" }}
-      >
+      <section className="hero">
+        {/* Background image — hidden on mobile to keep text clean */}
+        <div
+          className="absolute inset-0 hidden sm:block"
+          style={{ backgroundImage: "url('/images/hero-scene.jpg')", backgroundSize: "cover", backgroundPosition: "center bottom" }}
+        />
         {/* Gradient overlay */}
         <div className="hero-overlay" />
 
