@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { type Product, formatPrice, PRODUCTS } from "@/lib/products";
 import { PRODUCT_EXTENDED } from "@/lib/product-data";
-import { ProductVisual } from "@/components/product-visual";
+import { ProductGallery } from "@/components/product-gallery";
 import { ProductCard } from "@/components/product-card";
 
 interface ProductDetailProps {
@@ -127,22 +127,14 @@ export function ProductDetail({ product, allProducts }: ProductDetailProps) {
 
       {/* Main product section */}
       <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
-        {/* Visual */}
-        <div className="animate-fade-up">
-          <div className="relative aspect-square overflow-hidden rounded-sm border border-line bg-card">
-            <ProductVisual
-              image={product.image}
-              imageUrl={product.imageUrl}
-              name={product.name}
-              subtitle={product.subtitle}
-            />
-            {product.badge && (
-              <span className="badge absolute left-4 top-4">
-                {product.badge}
-              </span>
-            )}
-          </div>
-        </div>
+        {/* Visual — multi-image gallery */}
+        <ProductGallery
+          image={product.image}
+          imageUrl={product.imageUrl}
+          name={product.name}
+          subtitle={product.subtitle}
+          badge={product.badge}
+        />
 
         {/* Details */}
         <div className="animate-fade-up" style={{ animationDelay: "0.1s" }}>

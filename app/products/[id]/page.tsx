@@ -25,6 +25,7 @@ export function generateMetadata({ params }: Props): Metadata {
   const title = `${product.name} — ${product.subtitle} | AKIRA LABS`;
   const description = product.description.slice(0, 160);
   const url = `${siteUrl}/products/${product.slug}`;
+  const imageUrl = product.imageUrl || `${siteUrl}/images/hero-scene.jpg`;
 
   return {
     title,
@@ -34,11 +35,13 @@ export function generateMetadata({ params }: Props): Metadata {
       description,
       url,
       type: "website",
+      images: [{ url: imageUrl, alt: `${product.name} — ${product.subtitle}` }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [imageUrl],
     },
     alternates: {
       canonical: `/products/${product.slug}`,

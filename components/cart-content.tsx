@@ -52,7 +52,7 @@ export function CartContent({ allProducts }: { allProducts: Product[] }) {
 
   if (items.length === 0) {
     return (
-      <div className="mx-auto max-w-xl px-4 py-24 text-center sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-xl px-4 pb-24 pt-32 text-center sm:px-6 sm:pt-36 lg:px-8">
         <h1 className="font-mono text-2xl uppercase tracking-wider text-ink">
           Your Cart
         </h1>
@@ -65,7 +65,7 @@ export function CartContent({ allProducts }: { allProducts: Product[] }) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 pb-16 pt-28 sm:px-6 sm:pt-32 lg:px-8">
       <div className="flex items-center justify-between">
         <h1 className="animate-fade-up font-mono text-2xl uppercase tracking-wider text-ink">
           Your Cart
